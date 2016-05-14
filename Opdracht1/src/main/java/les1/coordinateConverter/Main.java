@@ -10,12 +10,12 @@ public class Main
         InputScanner scanner = new InputScanner();
 
         System.out.println("Please specify a coordinate source type.");
-        scanner.setSourceCoordinateType(scanner.validateGivenCoordinate());
+        scanner.setSourceCoordinateType(scanner.validateGivenCoordinateType());
         System.out.println("Please specify a coordinate result type.");
-        scanner.setResultCoordinateType(scanner.validateGivenCoordinate());
+        scanner.setResultCoordinateType(scanner.validateGivenCoordinateType());
 
         //make this name better
-        scanner.scanAndValidateInputOfGivenTypeOfCoordinate(scanner.getSourceCoordinateType());
+        scanner.scanAndValidateInputOfGivenCoordinate(scanner.getSourceCoordinateType());
     }
 
 }

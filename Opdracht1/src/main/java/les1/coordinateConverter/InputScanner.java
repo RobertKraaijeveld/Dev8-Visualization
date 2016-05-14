@@ -1,6 +1,10 @@
 package les1.coordinateConverter;
 
-import les1.earthquakePlotting.XYPair;
+import les1.coordinateConverter.CoordinateTypes.Coordinate;
+import les1.coordinateConverter.CoordinateTypes.Decimal;
+import les1.coordinateConverter.CoordinateTypes.Geographic;
+import les1.coordinateConverter.CoordinateTypes.RDH;
+import les1.earthquakePlotting.GenericPair;
 
 import java.util.Scanner;
 
@@ -10,7 +14,7 @@ import java.util.Scanner;
 public class InputScanner
 {
     private Scanner scanner = new Scanner(System.in);
-    private XYPair givenCoordinates;
+    private Coordinate givenCoordinates;
     private String sourceCoordinateType;
     private String resultCoordinateType;
 
@@ -23,41 +27,54 @@ public class InputScanner
         this.sourceCoordinateType = sourceCoordinateType;
     }
 
-    public String validateGivenCoordinate()
+    public String validateGivenCoordinateType()
     {
         String coordinateType = scanner.next();
 
         if((coordinateType.equals("RDH"))
         || (coordinateType.equals("Geo"))
-        || (coordinateType.equals("UTM")))
+        || (coordinateType.equals("Decimal")))
         {
             return coordinateType;
         }
         else
         {
             System.out.println("Please specify a valid coordinate type.");
-            return validateGivenCoordinate();
+            return validateGivenCoordinateType();
         }
     }
 
-    public void scanAndValidateInputOfGivenTypeOfCoordinate(String kindOfCoordinate)
+    public void scanAndValidateInputOfGivenCoordinate(String kindOfCoordinate)
     {
         try
         {
-            //distinghuish between types
             System.out.println("Please input a valid " + kindOfCoordinate + " coordinate.");
-            String input = scanner.next();
-            String latString = input.substring(0, input.indexOf(","));
-            String longString = input.substring(input.indexOf(","));
-            System.out.println(latString + "," + longString);
+            String input = this.scanner.next();
+            GenericPair<String, String> genericPairOfGivenXYStrings = splitCoordinateString(input, ',');
 
-            Float latFloat = Float.parseFloat(latString);
-            Float longFloat = Float.parseFloat(longString);
-            this.givenCoordinates = new XYPair(latFloat, longFloat);
+            if((kindOfCoordinate.equals("Geo")) && (Geographic.checkIfGivenCoordinateIsOfThisType(genericPairOfGivenXYStrings)))
+            {
+                Geographic geoCoordinate = new Geographic(genericPairOfGivenXYStrings);
+                this.givenCoordinates = geoCoordinate;
+            }
+            else if((kindOfCoordinate.equals("RDH")) && (RDH.checkIfGivenCoordinateIsOfThisType(genericPairOfGivenXYStrings)))
+            {
+                RDH rdhCoordinate = new RDH(genericPairOfGivenXYStrings);
+                this.givenCoordinates = rdhCoordinate;
+            }
+            else if((kindOfCoordinate.equals("Decimal")) && (Decimal.checkIfGivenCoordinateIsOfThisType(input)))
+            {
+                GenericPair<String, String> givenDecimalXYPair = splitCoordinateString(input, '.');
+                Decimal decimalCoordinate = new Decimal(givenDecimalXYPair);
+                this.givenCoordinates = decimalCoordinate;
+            }
+            else
+                scanAndValidateInputOfGivenCoordinate(kindOfCoordinate);
         }
         catch (Exception e)
         {
-            System.out.println("Please fill in a valid coordinate.");
+            e.printStackTrace();
+            scanAndValidateInputOfGivenCoordinate(kindOfCoordinate);
         }
     }
 
@@ -67,5 +84,13 @@ public class InputScanner
 
     public String getSourceCoordinateType() {
         return sourceCoordinateType;
+    }
+
+    private GenericPair<String, String> splitCoordinateString(String coordinateString, char delimiterToSplitBy)
+    {
+        String x = coordinateString.substring(0, coordinateString.indexOf(delimiterToSplitBy));
+        String y = coordinateString.substring(coordinateString.indexOf(delimiterToSplitBy) + 1);
+        System.out.println(x + "," + y);
+        return new GenericPair<>(x, y);
     }
 }
