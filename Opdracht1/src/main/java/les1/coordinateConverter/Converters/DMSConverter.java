@@ -20,7 +20,8 @@ public class DMSConverter extends Converter
 
         //These are the coordinates for Amersfoort in normal decimal/dms.
         double referenceDMSX = 52.15517;
-        double referenceDMSY = 5.387206;
+        //modified
+        double referenceDMSY = 53.87206;
 
         Float DMSLat = (float) sourceCoordinate.getXYPair().getLeftValue();
         Float DMSLong = (float) sourceCoordinate.getXYPair().getRightValue();
