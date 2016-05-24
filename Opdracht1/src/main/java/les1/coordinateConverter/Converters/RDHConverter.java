@@ -22,7 +22,7 @@ public class RDHConverter extends Converter
 
         //These are the coordinates for Amersfoort in normal decimal/dms.
         double referenceGeoX = 52.15517;
-        double referenceGeoY = 5.387206;
+        double referenceGeoY = 53.87206;
 
         Float GeoLat = (float) sourceCoordinate.getXYPair().getLeftValue();
         Float GeoLong = (float) sourceCoordinate.getXYPair().getRightValue();
