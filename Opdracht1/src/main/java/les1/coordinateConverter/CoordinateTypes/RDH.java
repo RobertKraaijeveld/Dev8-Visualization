@@ -37,7 +37,7 @@ public class RDH extends Coordinate
         String rightValue = xyFloats.getRightValue().toString();
 
         //Regex pattern for decimal number, done twice
-        Pattern p = Pattern.compile("[0-9]+(\\.[0-9][0-9]?)?");
+        Pattern p = Pattern.compile("\\d{6}\\.\\d");
         Matcher m1 =  p.matcher(leftValue);
         boolean latBoolean = m1.matches();
 

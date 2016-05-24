@@ -32,7 +32,7 @@ public class InputScanner
         String coordinateType = scanner.next();
 
         if((coordinateType.equals("RDH"))
-        || (coordinateType.equals("Geo"))
+        || (coordinateType.equals("DMS"))
         || (coordinateType.equals("Decimal")))
         {
             return coordinateType;
@@ -52,7 +52,7 @@ public class InputScanner
             String input = this.scanner.next();
 
 
-            if(kindOfCoordinate.equals("Geo"))
+            if(kindOfCoordinate.equals("DMS"))
             {
                 GenericPair<Float, Float> genericPairOfGivenXYFloats = splitCoordinateString(input, ',');
 
@@ -63,7 +63,7 @@ public class InputScanner
                 }
                 else
                 {
-                    System.out.println("Please input a real Geo coordinate.");
+                    System.out.println("Please input a real DMS coordinate.");
                     scanAndValidateInputOfGivenCoordinate(kindOfCoordinate);
                 }
             }

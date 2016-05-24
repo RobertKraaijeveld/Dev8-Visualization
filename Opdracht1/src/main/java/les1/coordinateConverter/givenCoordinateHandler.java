@@ -17,7 +17,7 @@ public class givenCoordinateHandler
         Converter c = givenCoordinate.getConverter();
 
         //I say sonny, this be some damn nice polymorphism
-        if(resultCoordinateType.equals("Geo"))
+        if(resultCoordinateType.equals("DMS"))
         {
             DMS resultDMS = (DMS) c.convertToDMS(givenCoordinate);
             System.out.println("Converted to dms, result: " + resultDMS.getXYPair().getLeftValue() + ","

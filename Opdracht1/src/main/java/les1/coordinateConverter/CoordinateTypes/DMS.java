@@ -31,7 +31,17 @@ public class DMS extends Coordinate
 
     public static boolean checkIfGivenCoordinateIsOfThisType(GenericPair<Float, Float> xyFloats)
     {
-        //TO FIX
-        return true;
+        //Regex pattern for decimal number
+        String firstCoordinate = xyFloats.getLeftValue().toString();
+        String secondCoordinate = xyFloats.getRightValue().toString();
+
+        Pattern p = Pattern.compile("\\d{6}\\.\\d");
+        Matcher m1 =  p.matcher(firstCoordinate);
+        Matcher m2 = p.matcher(secondCoordinate);
+
+        if(m1.matches() && m2.matches())
+            return true;
+        else
+            return false;
     }
 }
