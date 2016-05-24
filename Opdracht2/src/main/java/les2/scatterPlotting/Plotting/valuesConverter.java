@@ -37,7 +37,7 @@ public class valuesConverter
         return returnList;
     }
 
-    private void mapValueToPositionOnAxis(Point p)
+    public void mapValueToPositionOnAxis(Point p)
     {
         Float plotHeight = this.metaData.getWidthHeightPair().getLeftValue();
         Float plotWidth = this.metaData.getWidthHeightPair().getRightValue();
@@ -51,7 +51,10 @@ public class valuesConverter
                                 valuesFile.getSmallestOrBiggestValue("Y", "big"),
                                 0,
                                 plotHeight);
+
+        System.out.println("Converted " + p.getX() + ", " + p.getY() + "to: " + xPosition + "," + yPosition);
+
         p.setX(xPosition);
-        p.setX(yPosition);
+        p.setY(yPosition);
     }
 }

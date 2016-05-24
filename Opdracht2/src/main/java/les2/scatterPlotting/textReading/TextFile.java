@@ -56,7 +56,6 @@ public class TextFile
                BiggestOrSmallestNumberYet = value;
 
         }
-
         return BiggestOrSmallestNumberYet;
     }
 
@@ -78,7 +77,7 @@ public class TextFile
         ArrayList<Float> yValues = new ArrayList<>();
         this.XYfloats.forEach(
                 (item) -> {
-                    Float d = item.getLeftValue();
+                    Float d = item.getRightValue();
                     yValues.add(d);
                 }
         );

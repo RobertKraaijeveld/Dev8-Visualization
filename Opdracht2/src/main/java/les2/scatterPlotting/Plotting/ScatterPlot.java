@@ -17,4 +17,6 @@ public class ScatterPlot
     {
         this.pointPositions = pointPositions;
     }
+
+    public ArrayList<Point> getPointPositions() { return this.pointPositions; }
 }

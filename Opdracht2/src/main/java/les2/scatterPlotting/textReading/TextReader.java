@@ -21,7 +21,6 @@ public class TextReader
     
     public TextFile createTextFileInstance() throws Exception
     {
-        System.out.print(this.textFile.getAbsolutePath());
         BufferedReader reader = new BufferedReader(new FileReader(this.textFile));
         ArrayList<GenericPair<Float, Float>> XYPairsList = new ArrayList<>();
         
@@ -52,9 +51,7 @@ public class TextReader
         
         String Y = line.substring(3, line.length());
         Y = this.replaceCommasWithDots(Y);
-        
-        System.out.println("X: " + X + " Y: " + Y);
-        
+
         GenericPair<String, String> resultPair = new GenericPair<>(X,Y);
         return resultPair; 
     }
