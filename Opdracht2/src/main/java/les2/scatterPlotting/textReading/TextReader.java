@@ -10,13 +10,18 @@ import les2.scatterPlotting.Main.GenericPair;
  *
  * @author gover_000
  */
+
 public class TextReader 
 {
     private File textFile;
+    private int indexToStartReading;
+    private int indexToStopReading;
     
-    public TextReader(File textFile) 
+    public TextReader(File textFile, int indexToStartReading, int indexToStopReading)
     {
         this.textFile = textFile;
+        this.indexToStartReading = indexToStartReading;
+        this.indexToStopReading = indexToStopReading;
     }
     
     public TextFile createTextFileInstance() throws Exception
@@ -47,9 +52,9 @@ public class TextReader
     private GenericPair<String, String> splitStringIntoXY(String line)
     {
         line = this.removeSpaces(line);
-        String X  = line.substring(1, 3);
+        String X  = line.substring(this.indexToStartReading, this.indexToStopReading);
         
-        String Y = line.substring(3, line.length());
+        String Y = line.substring(this.indexToStopReading, line.length());
         Y = this.replaceCommasWithDots(Y);
 
         GenericPair<String, String> resultPair = new GenericPair<>(X,Y);
@@ -75,3 +80,5 @@ public class TextReader
         return stringToProcess.replaceAll("\\s+", "");
     }
 }
+
+

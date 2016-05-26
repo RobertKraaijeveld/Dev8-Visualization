@@ -1,38 +1,20 @@
 package les2.scatterPlotting.textReading;
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.IntStream;
-
 import les2.scatterPlotting.Main.GenericPair;
 
-import javax.xml.soap.Text;
-
-import static java.util.Comparator.comparingInt;
-
+import java.util.ArrayList;
 
 /**
- *
- * @author gover_000
+ * Created by Kraaijeveld on 27-5-2016.
  */
-public class TextFile
+public class StudentDataFile
 {
-    private ArrayList<GenericPair<Float,Float>> XYfloats = new ArrayList<>();
-    
-    public TextFile(ArrayList<GenericPair<Float,Float>> lines)
-    {
-        this.XYfloats = lines;
-    }
+    private ArrayList<GenericPair<String, Float>> studentDataValuesAndTheirTypes;
 
-    public ArrayList<GenericPair<Float,Float>> getLines()
+    public StudentDataFile(ArrayList<GenericPair<String, Float>> studentDataValuesAndTheirTypes)
     {
-        return this.XYfloats;
+        this.studentDataValuesAndTheirTypes = studentDataValuesAndTheirTypes;
     }
-
-    /*
-    * GOTTA CLEAN THIS MESS UP
-     */
 
     public Float getSmallestOrBiggestValue(String xOrY, String BigOrSmall)
     {
@@ -55,8 +37,8 @@ public class TextFile
         for(Float value : Values)
         {
             if((BigOrSmall.equals("small") && value < BiggestOrSmallestNumberYet)
-            || (BigOrSmall.equals("big") && value > BiggestOrSmallestNumberYet))
-               BiggestOrSmallestNumberYet = value;
+                    || (BigOrSmall.equals("big") && value > BiggestOrSmallestNumberYet))
+                BiggestOrSmallestNumberYet = value;
 
         }
         return BiggestOrSmallestNumberYet;
@@ -86,5 +68,5 @@ public class TextFile
         );
         return yValues;
     }
-}
 
+}

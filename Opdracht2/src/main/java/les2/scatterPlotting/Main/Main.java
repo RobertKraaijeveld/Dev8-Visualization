@@ -65,7 +65,7 @@ public class Main extends PApplet
 
             //X-axis
             line(thisPlotsAxises.getxAxisPoints().getLeftValue().getX(), thisPlotsAxises.getxAxisPoints().getLeftValue().getY(),
-                 thisPlotsAxises.getxAxisPoints().getRightValue().getX(), thisPlotsAxises.getxAxisPoints().getRightValue().getY());
+                    thisPlotsAxises.getxAxisPoints().getRightValue().getX(), thisPlotsAxises.getxAxisPoints().getRightValue().getY());
 
             //Y-axis
             line(thisPlotsAxises.getyAxisPoints().getLeftValue().getX(), thisPlotsAxises.getyAxisPoints().getLeftValue().getY(),
@@ -77,6 +77,7 @@ public class Main extends PApplet
     //I'm considering renaming it to 'Hogwarts'
     private void drawAxisValues() throws Exception
     {
+        //TODO: TEXTFILE INSTANCE USAGE
         //X-AXIS
         TextFile unmodifiedTextFile = READER.createTextFileInstance();
 
@@ -130,6 +131,8 @@ public class Main extends PApplet
             try
             {
                 FILE = new File("scatterplot.txt");
+
+                //TODO: TEXTFILE INSTANCE USGAE
                 TextFile textFile = READER.createTextFileInstance();
 
                 GenericPair<Float, Float> widthHeightPair = new GenericPair<>(300.0f, 400.0f);

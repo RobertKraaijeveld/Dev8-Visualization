@@ -43,14 +43,12 @@ public class valuesConverter
         Float plotWidth = this.metaData.getWidthHeightPair().getRightValue();
 
         Float xPosition = map(p.getX(), valuesFile.getSmallestOrBiggestValue("X", "small"),
-                                valuesFile.getSmallestOrBiggestValue("X", "big"),
-                                0,
-                                plotWidth);
+                              valuesFile.getSmallestOrBiggestValue("X", "big"),
+                              0, plotWidth);
 
         Float yPosition = map(p.getY(), valuesFile.getSmallestOrBiggestValue("Y", "small"),
-                                valuesFile.getSmallestOrBiggestValue("Y", "big"),
-                                0,
-                                plotHeight);
+                              valuesFile.getSmallestOrBiggestValue("Y", "big"),
+                              0, plotHeight);
 
         System.out.println("Converted " + p.getX() + ", " + p.getY() + "to: " + xPosition + "," + yPosition);
 
