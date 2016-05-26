@@ -12,11 +12,17 @@ import java.util.ArrayList;
 public class ScatterPlot
 {
     private ArrayList<Point> pointPositions = new ArrayList<>();
+    private Axises axises;
 
-    public ScatterPlot(ArrayList<Point> pointPositions)
+    public ScatterPlot(ArrayList<Point> pointPositions, Axises axises)
     {
         this.pointPositions = pointPositions;
+        this.axises = axises;
     }
 
     public ArrayList<Point> getPointPositions() { return this.pointPositions; }
+
+    public  Axises getAxises() { return this.axises; }
+
 }
+
