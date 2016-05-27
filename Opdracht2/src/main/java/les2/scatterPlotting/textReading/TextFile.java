@@ -16,6 +16,8 @@ import static java.util.Comparator.comparingInt;
  *
  * @author gover_000
  */
+
+//This is the class for the 'normal' X-Y textfile.
 public class TextFile
 {
     private ArrayList<GenericPair<Float,Float>> XYfloats = new ArrayList<>();

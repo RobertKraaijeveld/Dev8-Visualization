@@ -3,9 +3,11 @@ package les2.scatterPlotting.Main;
 import java.io.File;
 
 import les2.scatterPlotting.Plotting.*;
+import les2.scatterPlotting.textReading.StudentDataFile;
 import les2.scatterPlotting.textReading.TextFile;
 import processing.core.PApplet;
 
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,9 +16,8 @@ import les2.scatterPlotting.textReading.TextReader;
 
 public class Main extends PApplet
 {
+    private static TextReader READER;
     private static List<ScatterPlot> Plots = new ArrayList<>();
-    private static File FILE = new File("scatterplot.txt");
-    private static TextReader READER = new TextReader(FILE);
     private static final Float APPLET_WIDTH = 640.0f;
     private static final Float APPLET_HEIGHT = 470.0f;
 
@@ -26,17 +27,16 @@ public class Main extends PApplet
         size(APPLET_WIDTH.intValue(), APPLET_HEIGHT.intValue());
     }
 
-    public void setup() {
-
-    }
+    public void setup() {}
 
     public void draw()
     {
+        TextReader READER = getReaderToUse();
         try
         {
             drawPoints();
             drawAxises();
-            drawAxisValues();
+            drawAxisValues(READER);
         }
         catch (Exception e)
         {
@@ -75,7 +75,7 @@ public class Main extends PApplet
 
     //This method contains so many magic numbers,
     //I'm considering renaming it to 'Hogwarts'
-    private void drawAxisValues() throws Exception
+    private void drawAxisValues(TextReader READER) throws Exception
     {
         //TODO: TEXTFILE INSTANCE USAGE
         //X-AXIS
@@ -130,7 +130,8 @@ public class Main extends PApplet
         {
             try
             {
-                FILE = new File("scatterplot.txt");
+                File FILE = new File("scatterplot.txt");
+                TextReader READER = new TextReader(FILE);
 
                 //TODO: TEXTFILE INSTANCE USGAE
                 TextFile textFile = READER.createTextFileInstance();
@@ -162,12 +163,37 @@ public class Main extends PApplet
         }
         else if (getUsersAssignmentChoice().equals("2"))
         {
-            System.out.println("Assignment not implemented yet.");
+            try
+            {
+                File studentCijfersTextFile = new File("studentcijfers.txt");
+                TextReader textReader = new TextReader(studentCijfersTextFile);
+                setTextReaderToUse(textReader);
+
+                textReader.createStudentDataFileInstance();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
         else
         {
             System.out.println("Assignment not recognized.");
             getUsersAssignmentChoice();
         }
+    }
+
+    /*
+    * Methods to make sure a uniform textReader (and included file) is used when running an assignment.
+     */
+
+    private static void setTextReaderToUse(TextReader reader)
+    {
+        READER = reader;
+    }
+
+    private static TextReader getReaderToUse()
+    {
+        return READER;
     }
 }
