@@ -2,13 +2,13 @@ To-do:
 
 1: Make sure the textreader and the various constants in Main can handle
 different kind of textfiles. At the very least the two different ones that
-we get now.
+we get now. DONE!
 
 2: Test wether drawing multiple plots onto one applet works with the same parameters,
-moving them with scale() and translate(). Start with one extra.
+moving them with scale() and translate(). Start with one extra. DONE!
 
 3: Move on to the other scatterplots, add a (sub)class for the informative
-rectangles.
+rectangles. DOING
 
 4: Draw meta-information.
 

@@ -114,30 +114,33 @@ public class TextReader
         
         for(int i = 0; i < values.size(); i++)
         {
-            //Are these ifs necessary?
             if(i % 2 == 0)
             {
                 String stringId = headers.get(headerCounter);
                 Float value = values.get(i);
                 GenericPair<String, Float> pairToBeAdded = new GenericPair<>(stringId, value);
+                returnList.add(pairToBeAdded);
             }
             else if(i % 3 == 0)
             {
                 String stringId = headers.get(headerCounter);
                 Float value = values.get(i);
                 GenericPair<String, Float> pairToBeAdded = new GenericPair<>(stringId, value);
+                returnList.add(pairToBeAdded);
             }
             else if(i % 4 == 0)
             {
                 String stringId = headers.get(headerCounter);
                 Float value = values.get(i);
                 GenericPair<String, Float> pairToBeAdded = new GenericPair<>(stringId, value);
+                returnList.add(pairToBeAdded);
             }
             else
             {
                 String stringId = headers.get(headerCounter);
                 Float value = values.get(i);
                 GenericPair<String, Float> pairToBeAdded = new GenericPair<>(stringId, value);
+                returnList.add(pairToBeAdded);
             }
             
             //we reset the headerCounter after each line (which consists of 4 header elements).

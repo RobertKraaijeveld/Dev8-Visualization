@@ -11,20 +11,20 @@ import static processing.core.PApplet.map;
  *
  * @author gover_000
  */
-public class valuesConverter
+public class ValuesConverter
 {
     private ScatterPlotMetaData metaData;
     private TextFile valuesFile;
     private StudentDataFile studentFile;
 
-    public valuesConverter(TextFile valuesFile,
+    public ValuesConverter(TextFile valuesFile,
                            ScatterPlotMetaData metaData)
     {
         this.valuesFile = valuesFile;
         this.metaData = metaData;
     }
     
-    public valuesConverter(StudentDataFile studentFile,
+    public ValuesConverter(StudentDataFile studentFile,
                            ScatterPlotMetaData metaData)
     {
         this.studentFile = studentFile;
@@ -45,18 +45,37 @@ public class valuesConverter
         return returnList;
     }
 
-    public void mapValueToPositionOnAxis(Point p)
+    private void mapValueToPositionOnAxis(Point p)
     {
         Float plotHeight = this.metaData.getWidthHeightPair().getLeftValue();
         Float plotWidth = this.metaData.getWidthHeightPair().getRightValue();
 
-        Float xPosition = map(p.getX(), valuesFile.getSmallestOrBiggestValue("X", "small"),
-                              valuesFile.getSmallestOrBiggestValue("X", "big"),
-                              0, plotWidth);
+        Float smallestXvalue;
+        Float largestXvalue;
+        Float smallestYvalue;
+        Float largestYvalue;
 
-        Float yPosition = map(p.getY(), valuesFile.getSmallestOrBiggestValue("Y", "small"),
-                              valuesFile.getSmallestOrBiggestValue("Y", "big"),
-                              0, plotHeight);
+        if(this.metaData.getGenericPairOfXYValuesIfSet() != null)
+        {
+            String typeOfX = this.metaData.getGenericPairOfXYValuesIfSet().getLeftValue();
+            smallestXvalue = this.studentFile.getSmallestOrBiggestValue("X", typeOfX, "small");
+            largestXvalue = this.studentFile.getSmallestOrBiggestValue("X", typeOfX, "big");
+
+            String typeOfY = this.metaData.getGenericPairOfXYValuesIfSet().getRightValue();
+            smallestYvalue = this.studentFile.getSmallestOrBiggestValue("Y", typeOfY, "small");
+            largestYvalue = this.studentFile.getSmallestOrBiggestValue("Y", typeOfY, "big");
+        }
+        else
+        {
+            smallestXvalue =  this.valuesFile.getSmallestOrBiggestValue("X", "small");
+            largestXvalue = this.valuesFile.getSmallestOrBiggestValue("X", "big");
+
+            smallestYvalue = this.valuesFile.getSmallestOrBiggestValue("Y", "small");
+            largestYvalue = this.valuesFile.getSmallestOrBiggestValue("Y", "big");
+        }
+
+        Float xPosition = map(p.getX(), smallestXvalue, largestXvalue, 0, plotWidth);
+        Float yPosition = map(p.getY(), largestYvalue, smallestYvalue, 0, plotHeight);
 
         System.out.println("Converted " + p.getX() + ", " + p.getY() + "to: " + xPosition + "," + yPosition);
 

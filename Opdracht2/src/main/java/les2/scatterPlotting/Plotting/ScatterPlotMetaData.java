@@ -7,28 +7,27 @@ import les2.scatterPlotting.Main.GenericPair;
  */
 public class ScatterPlotMetaData
 {
-    private Float xAxisUpperBoundary;
-    private Float yAxisUpperBoundary;
     private GenericPair<Float, Float> heightWidthPair;
+    private GenericPair<String, String> typeOfXYvalues;
 
-    public ScatterPlotMetaData(//Float xAxisUpperBoundary,
-                               //Float yAxisUpperBoundary,
+    public ScatterPlotMetaData(GenericPair<String, String> typeOfXYvalues,
                                GenericPair<Float, Float> widthHeightPair)
     {
-        //this.xAxisUpperBoundary = xAxisUpperBoundary;
-        //this.yAxisUpperBoundary = yAxisUpperBoundary;
+        this.typeOfXYvalues = typeOfXYvalues;
         this.heightWidthPair = widthHeightPair;
-    }
-
-    public Float getxAxisUpperBoundary() { return this.xAxisUpperBoundary; }
-
-    public Float getyAxisUpperBoundary()
-    {
-        return this.yAxisUpperBoundary;
     }
 
     public GenericPair<Float, Float> getWidthHeightPair()
     {
         return this.heightWidthPair;
+    }
+
+    public GenericPair<String, String> getGenericPairOfXYValuesIfSet()
+    {
+        //Bit dirty, but we need a way to let the valueConverter know with what type of plot its going to be dealing.
+        if(this.typeOfXYvalues != null)
+            return this.typeOfXYvalues;
+        else
+            return null;
     }
 }

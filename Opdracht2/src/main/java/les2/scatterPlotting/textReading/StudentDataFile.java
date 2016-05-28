@@ -28,9 +28,15 @@ public class StudentDataFile
         for(GenericPair<String, Float> pair : this.studentDataValuesAndTheirTypes)
         {
             if(pair.getLeftValue().equals(xType))
+            {
+                System.out.println(pair.getLeftValue() + " is of X " + xType);
                 xTypeMatchesList.add(pair.getRightValue());
+            }
             else if(pair.getLeftValue().equals(yType))
+            {
+                System.out.println(pair.getLeftValue() + " is of Y " + yType);
                 yTypeMatchesList.add(pair.getRightValue());
+            }
         }
         
         for(int i = 0; i < xTypeMatchesList.size(); i++)
@@ -44,7 +50,7 @@ public class StudentDataFile
 
     public Float getSmallestOrBiggestValue(String xOrY, String typeOfValue, String BigOrSmall)
     {
-        ArrayList<Float> Values = new ArrayList<>();
+        ArrayList<Float> Values;
 
         if(xOrY.equals("X"))
             Values = this.createXvaluesList(typeOfValue);
