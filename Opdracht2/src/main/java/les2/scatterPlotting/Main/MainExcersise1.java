@@ -45,6 +45,25 @@ public class MainExcersise1 extends PApplet
             {
                 e.printStackTrace();
             }
+            drawLegend();
+        }
+        
+        private void drawLegend() 
+        {
+        fill(220);
+        rect(450,0, 220, 120);
+        fill(0);
+        text("LEGEND", 455,10);
+        
+        text("Size of point are based on CAT value:", 455, 45);
+        text("CAT 1: ", 455, 60);
+        ellipse(495, 55, 4.5f, 4.5f);
+        text("CAT 2: ", 455, 75);
+        ellipse(500, 70, 9f, 9f);
+        text("CAT 3: ", 455, 90);
+        ellipse(510, 85, 13.5f, 13.5f);
+        text("CAT 4: ", 455, 105);
+        ellipse(520, 100, 18f, 18f);
         }
 
         private void drawPoints() throws Exception
