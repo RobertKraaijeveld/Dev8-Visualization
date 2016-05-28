@@ -42,7 +42,7 @@ public class MainExcersise2 extends PApplet
         }
     }
 
-
+    //Ugly hard-code ahead, might wanna hold your breath
     private void drawPoints()
     {
         int plotCounter = 0;
@@ -67,12 +67,12 @@ public class MainExcersise2 extends PApplet
                     break;
 
                 case (3):
-                    translate(-980.0f, 200.0f);
+                    translate(-750.0f, 450.0f);
                     plotCounter++;
                     break;
 
                 case (4):
-                    translate(680.0f, 0.0f);
+                    translate(500.0f, -200.0f);
                     plotCounter++;
                     break;
 
@@ -82,35 +82,32 @@ public class MainExcersise2 extends PApplet
                     break;
 
                 case (6):
-                    translate(-980.0f, 600.0f);
+                    translate(-1085.0f, 600.0f);
                     plotCounter++;
                     break;
 
                 case (7):
-                    translate(650.0f, 0.0f);
+                    translate(440.0f, -180.0f);
                     plotCounter++;
                     break;
 
                 case (8):
-                    translate(300.0f, 0.0f);
+                    translate(600.0f, 180.0f);
                     plotCounter++;
                     break;
 
                 case (9):
-                    scale(0.97f);
-                    translate(-980.0f, 300.0f);
+                    translate(-1080.0f, 350.0f);
                     plotCounter++;
                     break;
 
                 case (10):
-                    scale(0.97f);
-                    translate(650.0f, 0.0f);
+                    translate(450.0f, -150.0f);
                     plotCounter++;
                     break;
 
                 case (11):
-                    scale(0.97f);
-                    translate(230.0f, 0.0f);
+                    translate(370.0f, 200.0f);
                     plotCounter++;
                     break;
             }
@@ -131,9 +128,9 @@ public class MainExcersise2 extends PApplet
         int basePosition = 200;
 
         text(boxTitles[0], 200, 200);
-        text(boxTitles[1], 550, 600);
-        text(boxTitles[2], 975, 975);
-        text(boxTitles[3], 1300, 1290);
+        text(boxTitles[1], 550, 650);
+        text(boxTitles[2], 975, 1050);
+        text(boxTitles[3], 1300, 1400);
     }
 
 
@@ -152,44 +149,44 @@ public class MainExcersise2 extends PApplet
             StudentDataFile studentData = textReader.createStudentDataFileInstance();
 
 
-            ArrayList<GenericPair<Float, Float>> DevAnaXYPairs =
-                    studentData.createXYPairsOfGivenTypes("DEV", "ANA");
-
-            ArrayList<GenericPair<Float, Float>> PrjAnaXYPairs =
-                    studentData.createXYPairsOfGivenTypes("PRJ", "ANA");
-
-            ArrayList<GenericPair<Float, Float>> SklAnaXYPairs =
-                    studentData.createXYPairsOfGivenTypes("SKL", "ANA");
-
-
             ArrayList<GenericPair<Float, Float>> AnaDevXYPairs =
                     studentData.createXYPairsOfGivenTypes("ANA", "DEV");
-
-            ArrayList<GenericPair<Float, Float>> PrjDevXYPairs =
-                    studentData.createXYPairsOfGivenTypes("PRJ", "DEV");
-
-            ArrayList<GenericPair<Float, Float>> SklDevXYPairs =
-                    studentData.createXYPairsOfGivenTypes("SKL", "DEV");
-
 
             ArrayList<GenericPair<Float, Float>> AnaPrjXYPairs =
                     studentData.createXYPairsOfGivenTypes("ANA", "PRJ");
 
-            ArrayList<GenericPair<Float, Float>> DevPrjXYPairs =
-                    studentData.createXYPairsOfGivenTypes("DEV", "PRJ");
-
-            ArrayList<GenericPair<Float, Float>> SklPrjXYPairs =
-                    studentData.createXYPairsOfGivenTypes("SKL", "PRJ");
-
-
             ArrayList<GenericPair<Float, Float>> AnaSklXYPairs =
                     studentData.createXYPairsOfGivenTypes("ANA", "SKL");
+
+
+            ArrayList<GenericPair<Float, Float>> DevAnaXYPairs =
+                    studentData.createXYPairsOfGivenTypes("DEV", "ANA");
+
+            ArrayList<GenericPair<Float, Float>> DevPrjXYPairs =
+                    studentData.createXYPairsOfGivenTypes("DEV", "PRJ");
 
             ArrayList<GenericPair<Float, Float>> DevSklXYPairs =
                     studentData.createXYPairsOfGivenTypes("DEV", "SKL");
 
+
+            ArrayList<GenericPair<Float, Float>> PrjAnaXYPairs =
+                    studentData.createXYPairsOfGivenTypes("PRJ", "ANA");
+
+            ArrayList<GenericPair<Float, Float>> PrjDevXYPairs =
+                    studentData.createXYPairsOfGivenTypes("PRJ", "DEV");
+
             ArrayList<GenericPair<Float, Float>> PrjSklXYPairs =
                     studentData.createXYPairsOfGivenTypes("PRJ", "SKL");
+
+
+            ArrayList<GenericPair<Float, Float>> SklAnaXYPairs =
+                    studentData.createXYPairsOfGivenTypes("SKL", "ANA");
+
+            ArrayList<GenericPair<Float, Float>> SklDevXYPairs =
+                    studentData.createXYPairsOfGivenTypes("SKL", "DEV");
+
+            ArrayList<GenericPair<Float, Float>> SklPrjXYPairs =
+                    studentData.createXYPairsOfGivenTypes("SKL", "PRJ");
 
 
             ValuesConverter converter = new ValuesConverter(studentData, meta);
@@ -197,17 +194,17 @@ public class MainExcersise2 extends PApplet
             ArrayList<Point> prjAnaPoints = converter.convertValuesToPoints(PrjAnaXYPairs);
             ArrayList<Point> sklAnaPoints = converter.convertValuesToPoints(SklAnaXYPairs);
 
-            ArrayList<Point> anaDevPoints = converter.convertValuesToPoints(AnaDevXYPairs);
+            ArrayList<Point> anaDevPoints = converter.convertValuesToPoints(DevAnaXYPairs);
             ArrayList<Point> prjDevPoints = converter.convertValuesToPoints(PrjDevXYPairs);
             ArrayList<Point> sklDevPoints = converter.convertValuesToPoints(SklDevXYPairs);
 
-            ArrayList<Point> anaPrjPoints = converter.convertValuesToPoints(AnaPrjXYPairs);
-            ArrayList<Point> devPrjPoints = converter.convertValuesToPoints(DevPrjXYPairs);
+            ArrayList<Point> anaPrjPoints = converter.convertValuesToPoints(PrjAnaXYPairs);
+            ArrayList<Point> devPrjPoints = converter.convertValuesToPoints(PrjDevXYPairs);
             ArrayList<Point> sklPrjPoints = converter.convertValuesToPoints(SklPrjXYPairs);
 
-            ArrayList<Point> anaSklPoints = converter.convertValuesToPoints(AnaSklXYPairs);
-            ArrayList<Point> devSklPoints = converter.convertValuesToPoints(DevSklXYPairs);
-            ArrayList<Point> prjSklPoints = converter.convertValuesToPoints(PrjSklXYPairs);
+            ArrayList<Point> anaSklPoints = converter.convertValuesToPoints(SklAnaXYPairs);
+            ArrayList<Point> devSklPoints = converter.convertValuesToPoints(SklDevXYPairs);
+            ArrayList<Point> prjSklPoints = converter.convertValuesToPoints(SklPrjXYPairs);
 
 
             Point xAxisPointOne = new Point(10.0f, 330.f);
