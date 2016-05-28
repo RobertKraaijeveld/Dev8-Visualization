@@ -14,7 +14,7 @@ import les2.scatterPlotting.Main.GenericPair;
 public class TextReader 
 {
     private File textFile;
-    
+
     public TextReader(File textFile)
     {
         this.textFile = textFile;
@@ -28,6 +28,7 @@ public class TextReader
     {
         BufferedReader reader = new BufferedReader(new FileReader(this.textFile));
         ArrayList<GenericPair<Float, Float>> XYPairsList = new ArrayList<>();
+        ArrayList<Integer> catValues = new ArrayList<>();
         
         String line;
         int lineCounter = 0;
@@ -38,6 +39,9 @@ public class TextReader
         {
             if(lineCounter != 0)
             {
+                int catValue = Integer.parseInt(getSingleValueFromLine(line, 0, 1));
+                catValues.add(catValue);
+
                 GenericPair<String, String> XYstring = splitStringIntoXY(line, lineIndexToStartSplitting, lineIndexToStopSplitting);
 
                 Float leftFloatValue = this.convertStringToFloat(XYstring.getLeftValue());
@@ -50,7 +54,7 @@ public class TextReader
         }
         reader.close();
        
-        TextFile returnTextFile = new TextFile(XYPairsList);
+        TextFile returnTextFile = new TextFile(XYPairsList, catValues);
         return returnTextFile;
     }
 

@@ -21,9 +21,11 @@ import static java.util.Comparator.comparingInt;
 public class TextFile
 {
     private ArrayList<GenericPair<Float,Float>> XYfloats = new ArrayList<>();
+    private ArrayList<Integer> catValues = new ArrayList<>();
     
-    public TextFile(ArrayList<GenericPair<Float,Float>> lines)
+    public TextFile(ArrayList<GenericPair<Float,Float>> lines, ArrayList<Integer> catValues)
     {
+        this.catValues = catValues;
         this.XYfloats = lines;
     }
 
@@ -31,6 +33,8 @@ public class TextFile
     {
         return this.XYfloats;
     }
+
+    public ArrayList<Integer> getCatValues() { return this.catValues; }
 
     /*
     * GOTTA CLEAN THIS MESS UP

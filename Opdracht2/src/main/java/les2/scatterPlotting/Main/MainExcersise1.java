@@ -33,6 +33,8 @@ public class MainExcersise1 extends PApplet
         }
 
         public void draw() {
+            background(220);
+            fill(50,100);
             try
             {
                 drawPoints();
@@ -45,14 +47,20 @@ public class MainExcersise1 extends PApplet
             }
         }
 
-        private void drawPoints()
+        private void drawPoints() throws Exception
         {
+            ArrayList<Integer> catValues = READER.createTextFileInstance().getCatValues();
+
             for (ScatterPlot scatterPlot : Plots)
             {
                 for (Point p : scatterPlot.getPointPositions())
                 {
                     //Changing the point values lightly to ensure a smooth fit in the applet window
-                    ellipse(p.getX() + 20, p.getY() + 20, 5, 5);
+                    int currentPointIndex = scatterPlot.getPointPositions().indexOf(p);
+                    Float size = catValues.get(currentPointIndex) * 4.5f;
+
+
+                    ellipse(p.getX() + 20, p.getY() + 20, size, size);
                 }
             }
         }
