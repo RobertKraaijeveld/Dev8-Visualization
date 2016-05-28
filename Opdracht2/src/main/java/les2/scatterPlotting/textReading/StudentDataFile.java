@@ -3,6 +3,7 @@ package les2.scatterPlotting.textReading;
 import les2.scatterPlotting.Main.GenericPair;
 
 import java.util.ArrayList;
+import les2.scatterPlotting.Plotting.Point;
 
 /**
  * Created by Kraaijeveld on 27-5-2016.
@@ -17,6 +18,29 @@ public class StudentDataFile
     {
         this.studentDataValuesAndTheirTypes = studentDataValuesAndTheirTypes;
     }
+    
+    public ArrayList<GenericPair<Float, Float>> createXYPairsOfGivenTypes(String xType, String yType)
+    {
+        ArrayList<Float> xTypeMatchesList = new ArrayList<>();
+        ArrayList<Float> yTypeMatchesList = new ArrayList<>();
+        ArrayList<GenericPair<Float, Float>> resultList = new ArrayList<>();
+        
+        for(GenericPair<String, Float> pair : this.studentDataValuesAndTheirTypes)
+        {
+            if(pair.getLeftValue().equals(xType))
+                xTypeMatchesList.add(pair.getRightValue());
+            else if(pair.getLeftValue().equals(yType))
+                yTypeMatchesList.add(pair.getRightValue());
+        }
+        
+        for(int i = 0; i < xTypeMatchesList.size(); i++)
+        {
+            GenericPair<Float, Float> pairToBeAdded;
+            pairToBeAdded = new GenericPair<>(xTypeMatchesList.get(i), yTypeMatchesList.get(i));
+            resultList.add(pairToBeAdded);
+        }
+        return resultList;
+    }
 
     public Float getSmallestOrBiggestValue(String xOrY, String typeOfValue, String BigOrSmall)
     {
@@ -27,13 +51,14 @@ public class StudentDataFile
         else
             Values = this.createYvaluesList(typeOfValue);
 
+        
         Float BiggestOrSmallestNumberYet = Values.get(0);
         for(Float value : Values)
         {
             if((BigOrSmall.equals("small") && value < BiggestOrSmallestNumberYet)
-                    || (BigOrSmall.equals("big") && value > BiggestOrSmallestNumberYet))
+               || (BigOrSmall.equals("big") && value > BiggestOrSmallestNumberYet)){
                 BiggestOrSmallestNumberYet = value;
-
+            }
         }
         return BiggestOrSmallestNumberYet;
     }

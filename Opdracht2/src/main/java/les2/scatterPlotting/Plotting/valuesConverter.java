@@ -3,6 +3,7 @@ package les2.scatterPlotting.Plotting;
 import les2.scatterPlotting.Main.GenericPair;
 import les2.scatterPlotting.textReading.TextFile;
 import java.util.ArrayList;
+import les2.scatterPlotting.textReading.StudentDataFile;
 
 import static processing.core.PApplet.map;
 
@@ -14,6 +15,7 @@ public class valuesConverter
 {
     private ScatterPlotMetaData metaData;
     private TextFile valuesFile;
+    private StudentDataFile studentFile;
 
     public valuesConverter(TextFile valuesFile,
                            ScatterPlotMetaData metaData)
@@ -21,14 +23,20 @@ public class valuesConverter
         this.valuesFile = valuesFile;
         this.metaData = metaData;
     }
+    
+    public valuesConverter(StudentDataFile studentFile,
+                           ScatterPlotMetaData metaData)
+    {
+        this.studentFile = studentFile;
+        this.metaData = metaData;
+    }
 
-    public ArrayList<Point> convertValuesToPoints()
+    public ArrayList<Point> convertValuesToPoints(ArrayList<GenericPair<Float, Float>> values)
     {
         ArrayList<Point> returnList = new ArrayList<>();
 
         //Ooeh, got a little fuuunctional there
-        this.valuesFile.getLines()
-                .forEach((pair) -> {
+        values.forEach((pair) -> {
                     Point p = new Point(pair.getLeftValue(),pair.getRightValue());
                     mapValueToPositionOnAxis(p);
                     returnList.add(p);

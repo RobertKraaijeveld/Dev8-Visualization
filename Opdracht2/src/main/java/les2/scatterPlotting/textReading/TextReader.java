@@ -84,7 +84,7 @@ public class TextReader
             else if(lineCounter >= 2)
             {
                 //we do 4 getSingleValueFromLine-grabs:
-                Float value1 = Float.parseFloat(getSingleValueFromLine(line, 0, 0));
+                Float value1 = Float.parseFloat(getSingleValueFromLine(line, 7, 10));
                 Float value2 = Float.parseFloat(getSingleValueFromLine(line, 10, 13));
                 Float value3 = Float.parseFloat(getSingleValueFromLine(line, 13, 16));
                 Float value4 = Float.parseFloat(getSingleValueFromLine(line, 16, 19));
@@ -109,41 +109,42 @@ public class TextReader
     private ArrayList<GenericPair<String, Float>> constructGenericPairsOutOfLists(ArrayList<String> headers, ArrayList<Float> values)
     {
         ArrayList<GenericPair<String, Float>> returnList = new ArrayList<>();
-
+        int headerCounter = 0;
+        
+        
         for(int i = 0; i < values.size(); i++)
         {
-            if(values.indexOf(i) % 1 == 0) {
-                GenericPair<String, Float> pairToBeAdded = new GenericPair<>(headers.get(1), values.get(i));
-
-                System.out.println("ConstructGenericPairsOutOfList made: " + pairToBeAdded.getLeftValue() + ","
-                        + pairToBeAdded.getRightValue());
-
-                returnList.add(pairToBeAdded);
+            //Are these ifs necessary?
+            if(i % 2 == 0)
+            {
+                String stringId = headers.get(headerCounter);
+                Float value = values.get(i);
+                GenericPair<String, Float> pairToBeAdded = new GenericPair<>(stringId, value);
             }
-            else if (values.indexOf(i) % 2 == 0) {
-                GenericPair<String, Float> pairToBeAdded = new GenericPair<>(headers.get(2), values.get(i));
-
-                System.out.println("ConstructGenericPairsOutOfList made: " + pairToBeAdded.getLeftValue() + ","
-                        + pairToBeAdded.getRightValue());
-
-                returnList.add(pairToBeAdded);
+            else if(i % 3 == 0)
+            {
+                String stringId = headers.get(headerCounter);
+                Float value = values.get(i);
+                GenericPair<String, Float> pairToBeAdded = new GenericPair<>(stringId, value);
             }
-            else if (values.indexOf(i) % 3 == 0) {
-                GenericPair<String, Float> pairToBeAdded = new GenericPair<>(headers.get(3), values.get(i));
-
-                System.out.println("ConstructGenericPairsOutOfList made: " + pairToBeAdded.getLeftValue() + ","
-                        + pairToBeAdded.getRightValue());
-
-                returnList.add(pairToBeAdded);
+            else if(i % 4 == 0)
+            {
+                String stringId = headers.get(headerCounter);
+                Float value = values.get(i);
+                GenericPair<String, Float> pairToBeAdded = new GenericPair<>(stringId, value);
             }
-            else {
-                GenericPair<String, Float> pairToBeAdded = new GenericPair<>(headers.get(0), values.get(i));
-
-                System.out.println("ConstructGenericPairsOutOfList made: " + pairToBeAdded.getLeftValue() + ","
-                        + pairToBeAdded.getRightValue());
-
-                returnList.add(pairToBeAdded);
+            else
+            {
+                String stringId = headers.get(headerCounter);
+                Float value = values.get(i);
+                GenericPair<String, Float> pairToBeAdded = new GenericPair<>(stringId, value);
             }
+            
+            //we reset the headerCounter after each line (which consists of 4 header elements).
+            if(headerCounter == 3)
+                headerCounter = 0;
+            else
+                headerCounter++;
         }
         return returnList;
     }
@@ -152,7 +153,8 @@ public class TextReader
     {
         line = this.removeSpaces(line);
         String stringToGrab  = line.substring(indexToStartSplitting, indexToStopSplitting);
-
+        stringToGrab = this.replaceCommasWithDots(stringToGrab);
+        
         System.out.println(stringToGrab);
         return stringToGrab;
     }

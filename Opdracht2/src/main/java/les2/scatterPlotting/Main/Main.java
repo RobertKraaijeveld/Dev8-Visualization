@@ -6,8 +6,6 @@ import les2.scatterPlotting.Plotting.*;
 import les2.scatterPlotting.textReading.StudentDataFile;
 import les2.scatterPlotting.textReading.TextFile;
 import processing.core.PApplet;
-
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -75,11 +73,11 @@ public class Main extends PApplet
 
     //This method contains so many magic numbers,
     //I'm considering renaming it to 'Hogwarts'
-    private void drawAxisValues(TextReader READER) throws Exception
+    private void drawAxisValues(TextReader textReaderToBeUsed) throws Exception
     {
         //TODO: TEXTFILE INSTANCE USAGE
         //X-AXIS
-        TextFile unmodifiedTextFile = READER.createTextFileInstance();
+        TextFile unmodifiedTextFile = textReaderToBeUsed.createTextFileInstance();
 
         Float XaxisBeginValue = unmodifiedTextFile.getSmallestOrBiggestValue("X", "small");
         Float XaxisEndValue = unmodifiedTextFile.getSmallestOrBiggestValue("X", "big");
@@ -131,15 +129,17 @@ public class Main extends PApplet
             try
             {
                 File FILE = new File("scatterplot.txt");
-                TextReader READER = new TextReader(FILE);
+                TextReader textReader = new TextReader(FILE);
 
                 //TODO: TEXTFILE INSTANCE USGAE
-                TextFile textFile = READER.createTextFileInstance();
+                TextFile textFile = textReader.createTextFileInstance();
+                setTextReaderToUse(textReader);
 
                 GenericPair<Float, Float> widthHeightPair = new GenericPair<>(300.0f, 400.0f);
                 ScatterPlotMetaData meta = new ScatterPlotMetaData(widthHeightPair);
 
                 valuesConverter valuesConverter = new valuesConverter(textFile, meta);
+                ArrayList<Point> pointsToBeDrawn = valuesConverter.convertValuesToPoints();
 
                 //Start somewhere, add multiplicants. Maybe that wont even be necessary if using translate() ?
                 Point xAxisPointOne = new Point(10.0f, 330.f);
@@ -152,7 +152,7 @@ public class Main extends PApplet
 
                 Axises axises = new Axises(xAxisPoints, yAxisPoints);
 
-                ScatterPlot plot = new ScatterPlot(valuesConverter.convertValuesToPoints(), axises);
+                ScatterPlot plot = new ScatterPlot(, axises);
                 Plots.add(plot);
             }
             catch (Exception e)
@@ -169,7 +169,16 @@ public class Main extends PApplet
                 TextReader textReader = new TextReader(studentCijfersTextFile);
                 setTextReaderToUse(textReader);
 
-                textReader.createStudentDataFileInstance();
+                GenericPair<Float, Float> widthHeightPair = new GenericPair<>(300.0f, 400.0f);
+                ScatterPlotMetaData meta = new ScatterPlotMetaData(widthHeightPair);
+                
+                StudentDataFile studentData = textReader.createStudentDataFileInstance();
+                ArrayList<GenericPair<Float, Float>> XYPairs = 
+                          studentData.createXYPairsOfGivenTypes("ANA", "DEV");
+                        
+                ValueConverter converter = new ValueConverter(, meta);
+                
+                ScatterPlot plot = new Scatterplot()
             }
             catch (Exception e)
             {
