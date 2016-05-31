@@ -4,8 +4,13 @@ import FileParsing.FileParser;
 import FileParsing.ParsedFile;
 import processing.core.PApplet;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -13,40 +18,54 @@ import java.nio.file.Paths;
  */
 public class Main extends PApplet
 {
-        public void settings()
-        {
+    static List<Vector3D> vectorList = new ArrayList<>();
 
+    @Override
+    public void settings() {
+
+    }
+
+    @Override
+    public void setup() {
+
+    }
+
+    @Override
+    public void draw() {
+
+    }
+
+
+    public static void main(String[] args) {
+        Main m = new Main();
+
+        try
+        {
+            vectorList = m.parseCsvFile("oost.csv");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
 
-        public void setup()
-        {
-        }
+        System.out.print("finished");
+    }
 
-        public void draw()
-        {
-        }
-        
-        public static void main(String[] args)
-        {
-            try
-            {
-                Path csvWest = Paths.get("west.csv");
-                FileParser parser = new FileParser(csvWest);
-                ParsedFile parsedFile = parser.createParsedFileInstance();
+    public static Vector3D parseRow(String row) {
+        Vector3D vector = new Vector3D();
+        vector.setxValue(Float.parseFloat(row.substring(0, row.indexOf(","))));
+        vector.setyValue(Float.parseFloat(row.substring(row.indexOf(",") + 1, row.lastIndexOf(","))));
+        vector.setzValue(Float.parseFloat(row.substring(row.lastIndexOf(",") + 1)));
 
-                /*
-                for(Vector3D v : parsedFile.getVectors())
-                {
-                    System.out.println("X: " + v.getX() + " Y: " + v.getY() + " Z " + v.getZ());
-                }*/
+        return vector;
+    }
 
-                PApplet.main(new String[]{Main.class.getName()});
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-
-        }
+    private List<Vector3D> parseCsvFile(String path) throws IOException {
+        return Files
+                .lines(Paths.get(path))
+                .skip(1)
+                .map(e -> parseRow(e))
+                .collect(Collectors.toList());
+    }
         
 }

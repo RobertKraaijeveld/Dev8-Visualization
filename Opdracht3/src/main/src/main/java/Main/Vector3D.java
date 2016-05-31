@@ -4,28 +4,34 @@ package Main;
  *
  * @author gover_000
  */
-public class Vector3D<X, Y, Z> 
+public class Vector3D
 {
-    private final X xValue;
-    private final Y yValue;
-    private final Z zValue;
+    private float xValue;
+    private float yValue;
+    private float zValue;
 
-    public Vector3D(X left, Y right, Z depth)
-    {
-        this.xValue = left;
-        this.yValue = right;
-        this.zValue = depth;
+    public float getX() {
+        return this.xValue;
     }
 
-    public X getX() {
-        return xValue;
-    }
-
-    public Y getY() {
-        return yValue;
+    public float getY() {
+        return this.yValue;
     }
     
-    public Z getZ() {
-        return zValue;
+    public float getZ() {
+        return this.zValue;
     }
+
+    public void setxValue(float xValue) {
+        this.xValue = xValue;
+    }
+
+    public void setyValue(float yValue) {
+        this.yValue = yValue;
+    }
+
+    public void setzValue(float zValue) {
+        this.zValue = zValue;
+    }
+
 }

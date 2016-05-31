@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,17 +29,16 @@ public class FileParser
 
     public ParsedFile createParsedFileInstance() throws Exception
     {
-        List<Vector3D<Float, Float, Float>> Vector3DList = new ArrayList<>();
+        List<Vector3D> Vector3DList = new ArrayList<>();
 
-        System.out.println("Loading...");
 
         //size: 37399955
         Vector3DList =
                 Files
-                .lines(coordinateFilePath)
-                .skip(1)
-                .map(splitLines -> convertStringArrayToVector3D(splitLines))
-                .collect(Collectors.toList());
+                   .lines(coordinateFilePath)
+                   .skip(1)
+                   .map(e -> convertStringArrayToVector3D(e))
+                   .collect(Collectors.toList());
 
         System.out.println("Done...");
 
@@ -53,14 +53,13 @@ public class FileParser
     }
     */
 
-    private Vector3D<Float, Float, Float> convertStringArrayToVector3D(String input)
+    private Vector3D convertStringArrayToVector3D(String input)
     {
-        Vector3D<Float, Float, Float> returnVector = new Vector3D
-        (
-            Float.parseFloat(input.substring(0, input.indexOf(","))),
-            Float.parseFloat(input.substring(input.indexOf(",") + 1, input.lastIndexOf(","))),
-            Float.parseFloat(input.substring(input.lastIndexOf(",") + 1))
-        );
+        Vector3D returnVector = new Vector3D();
+        returnVector.setxValue(Float.parseFloat(input.substring(0, input.indexOf(","))));
+        returnVector.setyValue(Float.parseFloat(input.substring(input.indexOf(",") + 1, input.lastIndexOf(","))));
+        returnVector.setzValue(Float.parseFloat(input.substring(input.lastIndexOf(",") + 1)));
+
         return returnVector;
     }     
 }
