@@ -1,16 +1,10 @@
 package FileParsing;
 
-import Main.Vector3D;
+import Datastructures.Vector3D;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,8 +25,8 @@ public class FileParser
     {
         List<Vector3D> Vector3DList = new ArrayList<>();
 
+        System.out.println("Started parsing.");
 
-        //size: 37399955
         Vector3DList =
                 Files
                    .lines(coordinateFilePath)
@@ -40,18 +34,9 @@ public class FileParser
                    .map(e -> convertStringArrayToVector3D(e))
                    .collect(Collectors.toList());
 
-        System.out.println("Done...");
-
-
+        System.out.println("Done parsing.");
         return new ParsedFile(Vector3DList);
     }
-
-    /*
-    private String[] SplitStringAfterComma(String input) 
-    {
-        return input.split(",");
-    }
-    */
 
     private Vector3D convertStringArrayToVector3D(String input)
     {
