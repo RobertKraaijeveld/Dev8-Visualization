@@ -43,7 +43,7 @@ public class FileParser
         System.out.println("Done...");
 
 
-        return null;
+        return new ParsedFile(Vector3DList);
     }
 
     /*
@@ -57,9 +57,9 @@ public class FileParser
     {
        String[] splitStrings = input.split(",");
 
-       Float X = Float.parseFloat(splitStrings[0]);
-       Float Y = Float.parseFloat(splitStrings[1]);
-       Float Z = Float.parseFloat(splitStrings[2]);
+       float X = Float.parseFloat(splitStrings[0]);
+       float Y = Float.parseFloat(splitStrings[1]);
+       float Z = Float.parseFloat(splitStrings[2]);
 
        return new Vector3D<>(X,Y,Z);
     }     
