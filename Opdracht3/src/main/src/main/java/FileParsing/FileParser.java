@@ -55,12 +55,12 @@ public class FileParser
 
     private Vector3D<Float, Float, Float> convertStringArrayToVector3D(String input)
     {
-       String[] splitStrings = input.split(",");
-
-       float X = Float.parseFloat(splitStrings[0]);
-       float Y = Float.parseFloat(splitStrings[1]);
-       float Z = Float.parseFloat(splitStrings[2]);
-
-       return new Vector3D<>(X,Y,Z);
+        Vector3D<Float, Float, Float> returnVector = new Vector3D
+        (
+            Float.parseFloat(input.substring(0, input.indexOf(","))),
+            Float.parseFloat(input.substring(input.indexOf(",") + 1, input.lastIndexOf(","))),
+            Float.parseFloat(input.substring(input.lastIndexOf(",") + 1))
+        );
+        return returnVector;
     }     
 }
