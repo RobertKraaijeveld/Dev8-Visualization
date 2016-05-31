@@ -39,6 +39,7 @@ public class Main extends PApplet
     public static void main(String[] args) {
         Main m = new Main();
 
+        System.out.println("started");
         try
         {
             vectorList = m.parseCsvFile("oost.csv");
