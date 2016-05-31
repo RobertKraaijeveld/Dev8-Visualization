@@ -23,7 +23,7 @@ public class CoordinateToAxisConverter
         {
             float xValueForLatitude = map(e.getlatLongPair().getLeftValue(), 66.8f, 63.1f, 0.0f, 480.0f);
             float yValueForLongitude = map(e.getlatLongPair().getRightValue(), -25.0f, -13.0f, 0.0f, 640.0f);
-            e.setConvertedCoordinatePair(new XYPair(yValueForLongitude , xValueForLatitude));
+            e.setConvertedCoordinatePair(new GenericPair<>(yValueForLongitude , xValueForLatitude));
         }
         return earthquakesList;
     }
@@ -31,7 +31,7 @@ public class CoordinateToAxisConverter
     private static ArrayList<Earthquake> setEarthquakeArrayList(JSONObject jsonObjectToParse)
     {
         JSONArray resultsArray = jsonObjectToParse.getJSONArray("results");
-        ArrayList<Earthquake> returnList = new ArrayList<Earthquake>();
+        ArrayList<Earthquake> returnList = new ArrayList<>();
 
         for (Object earthquakeObject : resultsArray)
         {

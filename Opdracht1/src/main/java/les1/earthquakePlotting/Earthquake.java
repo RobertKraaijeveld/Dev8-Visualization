@@ -5,7 +5,7 @@ package les1.earthquakePlotting;
  */
 public class Earthquake
 {
-    private XYPair convertedCoordinatePair;
+    private GenericPair<Float, Float> convertedCoordinatePair;
     private GenericPair<Float, Float> latLongPair;
     private float richterScale;
     private float depth;
@@ -18,13 +18,13 @@ public class Earthquake
 
     public GenericPair<Float, Float> getlatLongPair() { return this.latLongPair; }
 
-    public XYPair getConvertedCoordinatePair() { return convertedCoordinatePair; }
+    public GenericPair<Float, Float> getConvertedCoordinatePair() { return convertedCoordinatePair; }
 
     public float getRichterScale() { return this.richterScale; }
 
     public float getDepth() { return depth; }
 
-    public void setConvertedCoordinatePair(XYPair convertedCoordinatePair) { this.convertedCoordinatePair = convertedCoordinatePair; }
+    public void setConvertedCoordinatePair(GenericPair<Float, Float> convertedCoordinatePair) { this.convertedCoordinatePair = convertedCoordinatePair; }
 
     public void setRichterScale(float richterScale) {
         this.richterScale = richterScale;

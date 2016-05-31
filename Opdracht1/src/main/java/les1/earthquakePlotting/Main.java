@@ -28,6 +28,7 @@ public class Main extends PApplet
         image(icelandImage, 0, 0, 640, 480);
 
         drawEarthquakeDots();
+        drawTestDot();
         drawLegend();
     }
 
@@ -50,15 +51,16 @@ public class Main extends PApplet
     public void drawTestDot()
     {
         Earthquake eTest = new Earthquake(64.0f, -14.0f, 1, 10);
-        ArrayList<Earthquake> eTestList = new ArrayList<Earthquake>();
+        ArrayList<Earthquake> eTestList = new ArrayList<>();
         eTestList.add(eTest);
         eTestList = CoordinateToAxisConverter.calculateXYValuesForEarthquakesInList(eTestList);
 
         for(Earthquake eT : eTestList)
         {
-            System.out.println("TEST Lat: " + eT.getlatLongPair().getLeftValue() + " long: " + eT.getlatLongPair().getRightValue() + " depth: " + eT.getDepth());
             float ellipseSizeRelativeToRichterScale = Utilities.convertRichterScaleToElipseSize(eT.getRichterScale());
-            ellipse(eT.getConvertedCoordinatePair().getxValue(), eT.getConvertedCoordinatePair().getyValue(), ellipseSizeRelativeToRichterScale,ellipseSizeRelativeToRichterScale);
+
+            ellipse(eT.getConvertedCoordinatePair().getLeftValue(), eT.getConvertedCoordinatePair().getRightValue(),
+                    ellipseSizeRelativeToRichterScale,ellipseSizeRelativeToRichterScale);
 
             text("(Calibration test)", 526.66f, 343.24f);
             fill(255, 13, 0);
@@ -75,11 +77,13 @@ public class Main extends PApplet
             System.out.println("Lat: " + e.getlatLongPair().getLeftValue() + " long: " + e.getlatLongPair().getRightValue() + " depth: " + e.getDepth());
 
             float ellipseSizeRelativeToRichterScale = Utilities.convertRichterScaleToElipseSize(e.getRichterScale());
-            ellipse(e.getConvertedCoordinatePair().getxValue(), e.getConvertedCoordinatePair().getyValue(), ellipseSizeRelativeToRichterScale, ellipseSizeRelativeToRichterScale);
+
+            ellipse(e.getConvertedCoordinatePair().getLeftValue(), e.getConvertedCoordinatePair().getRightValue(),
+                    ellipseSizeRelativeToRichterScale, ellipseSizeRelativeToRichterScale);
+
             fill(Utilities.convertDepthToColor(e.getDepth()), 13, 0);
             noStroke();
         }
-        drawTestDot();
     }
 
     public static void main(String[] args)

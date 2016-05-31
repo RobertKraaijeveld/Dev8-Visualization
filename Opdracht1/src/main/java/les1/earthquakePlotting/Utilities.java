@@ -20,7 +20,6 @@ public class Utilities
 
     public static float convertRichterScaleToElipseSize(float richterScale)
     {
-        //8 is just an arbitrary multiplicant, mind you
         int baseElipseSize = 10;
         return baseElipseSize + (richterScale * 8);
     }
