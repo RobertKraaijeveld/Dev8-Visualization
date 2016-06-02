@@ -10,12 +10,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.processing</groupId>
-            <artifactId>core</artifactId>
-            <version>3.0.1</version>
-        </dependency>
-
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
@@ -25,6 +19,38 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20160212</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.processing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jogamp.gluegen</groupId>
+            <artifactId>gluegen-rt</artifactId>
+            <version>2.3.2</version>
+            <classifier>natives-windows-amd64</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jogamp.gluegen</groupId>
+            <artifactId>gluegen-rt</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jogamp.jogl</groupId>
+            <artifactId>jogl-all</artifactId>
+            <version>2.3.2</version>
+            <classifier>natives-windows-amd64</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jogamp.jogl</groupId>
+            <artifactId>jogl-all</artifactId>
+            <version>2.3.2</version>
         </dependency>
 
     </dependencies>

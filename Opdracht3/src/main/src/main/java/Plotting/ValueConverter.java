@@ -19,8 +19,7 @@ public class ValueConverter
     private GenericPair<Vector3D, Vector3D> largestXYs;
     private GenericPair<Integer, Integer> appletWidthHeightMaximums;
 
-    private final int RADIUS_OF_EARTH = 6371;
-
+    private Vector3D ZADKINE_STATUE_LOCATION = new Vector3D(92798.3067017f, 436965.057678f,4.212f);
 
 
     public ValueConverter(List<Vector3D> valuesList,
@@ -29,13 +28,14 @@ public class ValueConverter
                           GenericPair<Integer, Integer> appletWidthHeightMaximums)
     {
         this.valuesList = valuesList;
+
         this.smallestXYs = smallestXYs;
         this.largestXYs = largestXYs;
         this.appletWidthHeightMaximums = appletWidthHeightMaximums;
     }
 
 
-    public List<Vector3D> transformCoordinatesListToAppletPositions()
+    public List<Vector3D> getAppletPositionsForFullMap()
     {
         System.out.println("Started transforming.");
 
@@ -49,25 +49,24 @@ public class ValueConverter
         return this.valuesList;
     }
 
+
+
     private Vector3D convertCartesianVectorToAppletPosition(Vector3D unconvertedVector)
     {
         float smallestX = this.smallestXYs.getLeftValue().getX();
         float smallestY = this.smallestXYs.getRightValue().getY();
-
+        
         float largestX = this.largestXYs.getLeftValue().getX();
         float largestY = this.largestXYs.getRightValue().getY();
 
         float convertedX = map(unconvertedVector.getX(), smallestX, largestX,
                 0.0f, this.appletWidthHeightMaximums.getLeftValue());
 
-        float convertedY = map(unconvertedVector.getY(), smallestY, largestY,
+        //Y increases from south to north, so the largestY and smallestY variables are called inverted.
+        float convertedY = map(unconvertedVector.getY(), largestY, smallestY,
                 0.0f, this.appletWidthHeightMaximums.getRightValue());
 
-        Vector3D returnVector = new Vector3D();
-        returnVector.setxValue(convertedX);
-        returnVector.setyValue(convertedY);
-        returnVector.setzValue(unconvertedVector.getZ());
-
+        Vector3D returnVector = new Vector3D(convertedX, convertedY, unconvertedVector.getZ());
         return returnVector;
     }
 }

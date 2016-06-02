@@ -10,6 +10,15 @@ public class Vector3D
     private float yValue;
     private float zValue;
 
+    public Vector3D(){}
+
+    public Vector3D(float xValue, float yValue, float zValue)
+    {
+        this.xValue = xValue;
+        this.yValue = yValue;
+        this.zValue = zValue;
+    }
+
     public float getX() {
         return this.xValue;
     }
