@@ -14,9 +14,14 @@ import static processing.core.PApplet.map;
 public class ValueConverter
 {
     private List<Vector3D> valuesList;
+
     private GenericPair<Vector3D, Vector3D> smallestXYs;
     private GenericPair<Vector3D, Vector3D> largestXYs;
     private GenericPair<Integer, Integer> appletWidthHeightMaximums;
+
+    private final int RADIUS_OF_EARTH = 6371;
+
+
 
     public ValueConverter(List<Vector3D> valuesList,
                           GenericPair<Vector3D,Vector3D> smallestXYs,
@@ -29,9 +34,11 @@ public class ValueConverter
         this.appletWidthHeightMaximums = appletWidthHeightMaximums;
     }
 
+
     public List<Vector3D> transformCoordinatesListToAppletPositions()
     {
         System.out.println("Started transforming.");
+
         //I chose to transform an existing list instead of copying into a new one for performance reasons.
         //Not creating a new Vector here decreases readability, but increases performance.
         for(int i = 0; i < this.valuesList.size(); i++)

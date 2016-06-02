@@ -39,7 +39,6 @@ public class Main extends PApplet
     public void draw()
     {
         background(220);
-        noFill();
         drawEllipses();
     }
 
@@ -49,9 +48,8 @@ public class Main extends PApplet
 
         for(Vector3D vector : vectorsToBeDrawn)
         {
-            int brightnessToUse = this.calculateEllipseBrightness(vector);
-
             ellipse(vector.getX(), vector.getY(), 1,1);
+            int brightnessToUse = this.calculateEllipseBrightness(vector);
         }
         System.out.println("Done drawing.");
     }
@@ -76,12 +74,14 @@ public class Main extends PApplet
             GenericPair<Vector3D, Vector3D> smallestXYVectors = parsedFile.getVectorsWithSmallestXYs();
             GenericPair<Vector3D, Vector3D> largestXYVectors = parsedFile.getVectorsWithLargestXYs();
 
+
             GenericPair<Integer, Integer> appletWidthHeightMaximums = new GenericPair<>(1000, 800);
 
             ValueConverter converter = new ValueConverter(parsedFile.getSourceVectors(), smallestXYVectors,
                                                           largestXYVectors, appletWidthHeightMaximums);
 
             vectorsToBeDrawn = converter.transformCoordinatesListToAppletPositions();
+
         }
         catch (Exception e)
         {
