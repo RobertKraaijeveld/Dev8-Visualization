@@ -1,0 +1,9 @@
+Zadkine statue coordinates: 92798.3067017,436965.057678,4.212 approxiamately. Also note, the data is RDH.
+
+3: Drawing only 500/1000 meters around this statue as origin. DOING
+
+4.5: Making the area size selectable. TODO
+
+5: Making the 3D visualization complete, and including controls. TODO
+
+6: Including the water levels, making them rise over time. TODO
