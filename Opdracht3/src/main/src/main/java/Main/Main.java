@@ -46,10 +46,25 @@ public class Main extends PApplet
         rotateZ(appletMetaData.getCameraAngle());
 
         background(220);
+
+        pushMatrix();
         drawBoxes();
+        popMatrix();
     }
 
-    //CHANGE THIS, AND UNDERSTAND IT
+
+    //TODO CHANGE THIS, AND UNDERSTAND IT
+    @Override
+    public void mouseDragged()
+    {
+        if (mouseButton == LEFT)
+        {
+            System.out.println("LEFT");
+            appletMetaData.setCameraAngle(appletMetaData.getCameraAngle() + (radians(-(mouseX- pmouseX)) / 2 ));
+        }
+    }
+
+    //TODO  CHANGE THIS, AND UNDERSTAND IT
     @Override
     public void mouseWheel(MouseEvent event)
     {
@@ -57,6 +72,7 @@ public class Main extends PApplet
 
         float amountOfScroll = event.getCount();
         System.out.println(amountOfScroll);
+
         appletMetaData.setCurrentScale( (float) (currentScale - (amountOfScroll /5.0)) );
 
         if (currentScale < 1)
@@ -84,8 +100,8 @@ public class Main extends PApplet
             translate((vector.getX() - 500.0f) * appletMetaData.getCurrentScale(),
                     (1000f - vector.getY() - 500f) * appletMetaData.getCurrentScale(), 0);
 
-            box(appletMetaData.getCurrentScale() * 2, appletMetaData.getCurrentScale()* 2,
-                (vector.getZ() + 2) * 2 * appletMetaData.getCurrentScale());
+            box(2 * appletMetaData.getCurrentScale() , 2 * appletMetaData.getCurrentScale(),
+                    (float) (vector.getZ() + 10) * 2 * appletMetaData.getCurrentScale());
 
             popMatrix();
 
@@ -120,7 +136,7 @@ public class Main extends PApplet
             ValueConverter converter = new ValueConverter(parsedFile.getSourceVectors(), smallestXYVectors,
                                                           largestXYVectors, appletWidthHeightMaximums);
 
-            vectorsToBeDrawn = converter.getAppletPositionsForFullMap();
+            vectorsToBeDrawn = converter.getAppletPositionsAroundStatueAreaRadius(500);
 
         }
         catch (Exception e)
