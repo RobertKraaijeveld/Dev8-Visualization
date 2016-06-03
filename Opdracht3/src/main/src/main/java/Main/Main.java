@@ -7,7 +7,6 @@ import FileParsing.ParsedFile;
 import Plotting.ValueConverter;
 import Utilities.TimeMeasurer;
 import processing.core.PApplet;
-import processing.event.MouseEvent;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,11 +21,12 @@ import java.util.Scanner;
 public class Main extends PApplet
 {
     private static AppletMetaData appletMetaData = new AppletMetaData();
+    private static Vector3D ZADKINE_STATUE_VECTOR = new Vector3D(92800f, 436955f, 4f);
 
     private static GenericPair<Integer, Integer> appletWidthHeightMaximums = new GenericPair<>(1000, 1000);
     private static GenericPair<Vector3D, Vector3D> smallestXYVectors;
     private static GenericPair<Vector3D, Vector3D> largestXYVectors;
-    private static Vector3D largestZVector;
+    private static GenericPair<Vector3D, Vector3D> smallestAndLargestZVectors;
 
     private static List<Vector3D> vectorsToBeDrawn;
 
@@ -55,6 +55,7 @@ public class Main extends PApplet
         pushMatrix();
         drawBoxes();
         drawWaterBoxes();
+        drawLegend();
         popMatrix();
     }
 
@@ -76,14 +77,7 @@ public class Main extends PApplet
         }
     }
 
-    /*
-    float e = event.getCount();
-        scale = (float) (scale - e/5.0);
-        if (scale < 1)
-            scale = 1;
-        else if (scale > 3)
-            scale = 3;
-     */
+
 
     @Override
     public void keyPressed()
@@ -104,14 +98,16 @@ public class Main extends PApplet
 
     private void increaseZoomLevel()
     {
+        System.out.println("Zoomlevel: " + appletMetaData.getCurrentZoomLevelIndex());
+
         float[] possibleZooms = appletMetaData.getZoomLevels();
         int currentZoomLevelIndex = appletMetaData.getCurrentZoomLevelIndex();
 
         //There are 4 zoomlevels total, cycling beyond the last one will reset the zoomlevel to the first.
-        if(currentZoomLevelIndex < 3)
+        if(currentZoomLevelIndex < 4)
         {
             appletMetaData.setCurrentScale(possibleZooms[currentZoomLevelIndex]);
-            appletMetaData.setCurrentZoomLevelIndex(currentZoomLevelIndex++);
+            appletMetaData.setCurrentZoomLevelIndex(currentZoomLevelIndex += 1);
         }
         else
         {
@@ -131,7 +127,7 @@ public class Main extends PApplet
     private void resetSimulation()
     {
         appletMetaData.setHoursPassed(0);
-        appletMetaData.setCurrentWaterHeight(0);
+        appletMetaData.setCurrentWaterHeight(-4);
     }
 
 
@@ -139,9 +135,16 @@ public class Main extends PApplet
      * Drawing
      **/
 
+    private void drawLegend()
+    {
+        //Draw controls
+        //And hours/water level
+    }
+
+
     private void drawWaterBoxes()
     {
-        float tallestVectorHeight = largestZVector.getZ();
+        float tallestVectorHeight = smallestAndLargestZVectors.getRightValue().getZ();
         float currentWaterHeight = appletMetaData.getCurrentWaterHeight();
         float elapsedHours = appletMetaData.getHoursPassed();
 
@@ -247,7 +250,7 @@ public class Main extends PApplet
             Path csvEast = Paths.get("oost.csv");
             int desiredMapRadius = getUserMapSizeChoice();
 
-            FileParser parser = new FileParser(csvEast, desiredMapRadius);
+            FileParser parser = new FileParser(csvEast, ZADKINE_STATUE_VECTOR, desiredMapRadius);
 
             TimeMeasurer.startTimer();
             ParsedFile parsedFile = parser.createParsedFileInstance();
@@ -255,7 +258,7 @@ public class Main extends PApplet
 
             smallestXYVectors = parsedFile.getVectorsWithSmallestXYs();
             largestXYVectors = parsedFile.getVectorsWithLargestXYs();
-            largestZVector = parsedFile.getVectorsWithLargestZ();
+            smallestAndLargestZVectors = parsedFile.getSmallestAndLargestZvectors();
 
             ValueConverter converter = new ValueConverter(parsedFile.getSourceVectors(),
                                             smallestXYVectors, largestXYVectors, appletWidthHeightMaximums);

@@ -20,13 +20,14 @@ import java.util.stream.Collectors;
 public class FileParser 
 {
     private Path coordinateFilePath;
-    private Vector3D ZADKINE_STATUE_LOCATION = new Vector3D(92800f, 436955f,4f);
+    private Vector3D ZADKINE_STATUE_LOCATION;
     private int desiredMapRadiusAroundStatue;
 
     
-    public FileParser(Path coordinateFilePath, int desiredMapRadiusAroundStatue)
+    public FileParser(Path coordinateFilePath, Vector3D zadkineStatueVector, int desiredMapRadiusAroundStatue)
     {
         this.coordinateFilePath = coordinateFilePath;
+        this.ZADKINE_STATUE_LOCATION = zadkineStatueVector;
         this.desiredMapRadiusAroundStatue = desiredMapRadiusAroundStatue;
     }
 
@@ -51,10 +52,6 @@ public class FileParser
             {
                 Vector3DList.add(currentVector);
             }
-            else
-            {
-                currentVector = null;
-            }
         }
         System.out.println("Done parsing.");
         return new ParsedFile(Vector3DList);
@@ -75,6 +72,12 @@ public class FileParser
     {
         float thisVectorsXDistanceFromStatue = (float) Math.abs(this.ZADKINE_STATUE_LOCATION.getX() - vector.getX());
         float thisVectorsYDistanceFromStatue = (float) Math.abs(this.ZADKINE_STATUE_LOCATION.getY() - vector.getY());
+
+        //TODO: TEMP
+        if(vector.getX() == ZADKINE_STATUE_LOCATION.getX() && vector.getY() == ZADKINE_STATUE_LOCATION.getY())
+        {
+            System.out.println(vector.getX() + "," + vector.getY());
+        }
 
         if(thisVectorsXDistanceFromStatue < this.desiredMapRadiusAroundStatue
         && thisVectorsYDistanceFromStatue < this.desiredMapRadiusAroundStatue)

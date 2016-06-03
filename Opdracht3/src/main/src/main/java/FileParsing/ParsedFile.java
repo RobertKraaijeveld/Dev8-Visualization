@@ -59,13 +59,18 @@ public class ParsedFile
         return new GenericPair<>(largestXvector, largestYvector);
     }
 
-    public Vector3D getVectorsWithLargestZ()
+    public GenericPair<Vector3D, Vector3D> getSmallestAndLargestZvectors()
     {
-       Vector3D returnVector = Vectors
+        Vector3D smallestVector = Vectors
+                .stream()
+                .min((v1, v2) -> Float.compare(v1.getZ(), v2.getZ()))
+                .get();
+
+        Vector3D largestVector = Vectors
                             .stream()
                            .max((v1, v2) -> Float.compare(v1.getZ(), v2.getZ()))
                            .get();
 
-        return returnVector;
+        return new GenericPair<>(smallestVector, largestVector);
     }
 }
