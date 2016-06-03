@@ -54,32 +54,41 @@ public class Main extends PApplet
     }
 
 
-    //TODO CHANGE THIS, AND UNDERSTAND IT
     @Override
     public void mouseDragged()
     {
         if (mouseButton == LEFT)
         {
-            System.out.println("LEFT");
-            appletMetaData.setCameraAngle(appletMetaData.getCameraAngle() + (radians(-(mouseX- pmouseX)) / 2 ));
+            //pMouseX == previous frame mouse position
+            //what does - do
+            float radiansToMoveBy = radians( -(mouseX - pmouseX));
+            appletMetaData.setCameraAngle(appletMetaData.getCameraAngle() + (radiansToMoveBy / 2 ));
         }
     }
 
-    //TODO  CHANGE THIS, AND UNDERSTAND IT
+
     @Override
     public void mouseWheel(MouseEvent event)
     {
         float currentScale = appletMetaData.getCurrentScale();
+        float maximumLevelOfZoom = 0.5f;
+        float minimumLevelOfZoom = 3.5f;
 
         float amountOfScroll = event.getCount();
+
         System.out.println(amountOfScroll);
 
-        appletMetaData.setCurrentScale( (float) (currentScale - (amountOfScroll /5.0)) );
+        //Diving by 5 in order to make the scroll-steps smaller
+        float newScroll = currentScale - (amountOfScroll / 5);
+        appletMetaData.setCurrentScale(newScroll);
 
-        if (currentScale < 1)
-            appletMetaData.setCurrentScale(1);
-        else if (currentScale > 3)
-            appletMetaData.setCurrentScale(3);
+
+        if (currentScale < minimumLevelOfZoom) {
+            appletMetaData.setCurrentScale(minimumLevelOfZoom);
+        }
+        else if (currentScale > maximumLevelOfZoom) {
+            appletMetaData.setCurrentScale(maximumLevelOfZoom);
+        }
     }
 
     //CHANGE THIS, AND UNDERSTAND IT
@@ -93,6 +102,15 @@ public class Main extends PApplet
         {
             float colorTint = this.calculateEllipseTint(vector);
             fill(colorTint);
+
+            /*
+            //clean this magic number mess
+            translate((vector.getX() - 500.0f) * appletMetaData.getCurrentScale(),
+                    (1000f - vector.getY() - 500f) * appletMetaData.getCurrentScale(), 0);
+
+            box(2 * appletMetaData.getCurrentScale() , 2 * appletMetaData.getCurrentScale(),
+                    (float) (vector.getZ() + 10) * 2 * appletMetaData.getCurrentScale());
+             */
 
             pushMatrix();
             //clean this magic number mess
@@ -118,14 +136,14 @@ public class Main extends PApplet
     **/
 
 
-    private int getUserMapSizeChoice()
+    private static int getUserMapSizeChoice()
     {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Welcome! Please specify how big you want the visualization to be in meters.");
+        System.out.println("Please specify how big you want the visualization to be in meters.");
         System.out.println("Note that the center of the visualization will be the 'Destroyed City' statue in Rotterdam.");
 
-        //500 is the default value
+        //500m radius is the default value
         int result = 500;
 
         try
@@ -141,7 +159,7 @@ public class Main extends PApplet
         }
         catch(Exception e)
         {
-            System.out.println("Please fill in a valid numeric value..");
+            getUserMapSizeChoice();
         }
         return result;
     }
@@ -155,7 +173,7 @@ public class Main extends PApplet
             appletMetaData.setCurrentScale(2);
 
             Path csvEast = Paths.get("oost.csv");
-            int desiredMapRadius = 1000;
+            int desiredMapRadius = getUserMapSizeChoice();
 
             FileParser parser = new FileParser(csvEast, desiredMapRadius);
 
@@ -170,7 +188,6 @@ public class Main extends PApplet
                     largestXYVectors, appletWidthHeightMaximums);
 
             vectorsToBeDrawn = converter.getAppletPositions();
-
         }
         catch (Exception e)
         {
