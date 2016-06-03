@@ -22,8 +22,14 @@ import java.util.Scanner;
 public class Main extends PApplet
 {
     private static AppletMetaData appletMetaData = new AppletMetaData();
+
     private static GenericPair<Integer, Integer> appletWidthHeightMaximums = new GenericPair<>(1000, 1000);
+    private static GenericPair<Vector3D, Vector3D> smallestXYVectors;
+    private static GenericPair<Vector3D, Vector3D> largestXYVectors;
+    private static Vector3D largestZVector;
+
     private static List<Vector3D> vectorsToBeDrawn;
+
 
     @Override
     public void settings()
@@ -32,9 +38,7 @@ public class Main extends PApplet
     }
 
     @Override
-    public void setup()
-    {
-    }
+    public void setup(){}
 
     @Override
     public void draw()
@@ -49,9 +53,17 @@ public class Main extends PApplet
         background(220);
 
         pushMatrix();
+
         drawBoxes();
+        drawWaterBoxes();
+
         popMatrix();
     }
+
+
+    /**
+     * Controls
+     **/
 
 
     @Override
@@ -62,7 +74,7 @@ public class Main extends PApplet
             //pMouseX == previous frame mouse position
             //what does - do
             float radiansToMoveBy = radians( -(mouseX - pmouseX));
-            appletMetaData.setCameraAngle(appletMetaData.getCameraAngle() + (radiansToMoveBy / 2 ));
+            appletMetaData.setCameraAngle(appletMetaData.getCameraAngle() + (radiansToMoveBy / 2));
         }
     }
 
@@ -91,7 +103,56 @@ public class Main extends PApplet
         }
     }
 
-    //CHANGE THIS, AND UNDERSTAND IT
+    /**
+     * Drawing
+     **/
+
+    /*
+    public void drawWaterHeight() {
+        if (!pauseStatus && waterHeight <= maxValueZ) {
+            waterHeight+=0.2f;
+            timePassed+=0.4f;
+        }
+        fill(0, 0 , 255, 96);
+        pushMatrix();
+        translate(0, 0, 0);
+        box(1000 * scale, 1000 * scale, (float) (waterHeight + 10) * 2 * scale);
+        popMatrix();
+    }
+    */
+
+    private void drawWaterBoxes()
+    {
+        float tallestVectorHeight = largestZVector.getZ();
+        float currentWaterHeight = appletMetaData.getCurrentWaterHeight();
+        float elapsedHours = appletMetaData.getHoursPassed();
+
+        if(appletMetaData.isPaused() == false)
+        {
+            //Is this really half a meter?
+            appletMetaData.setCurrentWaterHeight(currentWaterHeight + 0.15f);
+            //Do we really want to count hours?
+            appletMetaData.setHoursPassed(elapsedHours + 1);
+        }
+        else if(appletMetaData.getCurrentWaterHeight() < tallestVectorHeight)
+        {
+            //TODO
+        }
+
+        fill(0, 0, 255, 95);
+
+        pushMatrix();
+        //We do this to ensure that the water rises evenly across the whole map
+        translate(0,0,0);
+
+        //TODO what are these magic numbers?
+        float waterBoxZ = (currentWaterHeight + 10) * (2 * appletMetaData.getCurrentScale());
+        box(1000 * appletMetaData.getCurrentScale(), 1000 * appletMetaData.getCurrentScale(), waterBoxZ);
+
+        popMatrix();
+    }
+
+    //TODO CHANGE THIS, AND UNDERSTAND IT
     private void drawBoxes()
     {
         System.out.println("Starting to draw.");
@@ -102,15 +163,6 @@ public class Main extends PApplet
         {
             float colorTint = this.calculateEllipseTint(vector);
             fill(colorTint);
-
-            /*
-            //clean this magic number mess
-            translate((vector.getX() - 500.0f) * appletMetaData.getCurrentScale(),
-                    (1000f - vector.getY() - 500f) * appletMetaData.getCurrentScale(), 0);
-
-            box(2 * appletMetaData.getCurrentScale() , 2 * appletMetaData.getCurrentScale(),
-                    (float) (vector.getZ() + 10) * 2 * appletMetaData.getCurrentScale());
-             */
 
             pushMatrix();
             //clean this magic number mess
@@ -128,11 +180,12 @@ public class Main extends PApplet
     private float calculateEllipseTint(Vector3D vector)
     {
         float tintMultiplicant = 3f;
-        return (float) (tintMultiplicant * vector.getZ()) + 15;
+        return tintMultiplicant * vector.getZ() + 15;
     }
 
+
     /**
-    * Main() and
+    * Main() and getting users choice
     **/
 
 
@@ -181,11 +234,12 @@ public class Main extends PApplet
             ParsedFile parsedFile = parser.createParsedFileInstance();
             TimeMeasurer.printElapsedTimeInSeconds();
 
-            GenericPair<Vector3D, Vector3D> smallestXYVectors = parsedFile.getVectorsWithSmallestXYs();
-            GenericPair<Vector3D, Vector3D> largestXYVectors = parsedFile.getVectorsWithLargestXYs();
+            smallestXYVectors = parsedFile.getVectorsWithSmallestXYs();
+            largestXYVectors = parsedFile.getVectorsWithLargestXYs();
+            largestZVector = parsedFile.getVectorsWithLargestZ();
 
-            ValueConverter converter = new ValueConverter(parsedFile.getSourceVectors(), smallestXYVectors,
-                    largestXYVectors, appletWidthHeightMaximums);
+            ValueConverter converter = new ValueConverter(parsedFile.getSourceVectors(),
+                                            smallestXYVectors, largestXYVectors, appletWidthHeightMaximums);
 
             vectorsToBeDrawn = converter.getAppletPositions();
         }
