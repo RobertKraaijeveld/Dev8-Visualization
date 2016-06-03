@@ -20,8 +20,6 @@ import java.util.stream.Collectors;
 public class FileParser 
 {
     private Path coordinateFilePath;
-
-    //private Vector3D ZADKINE_STATUE_LOCATION = new Vector3D(92798.3067017f, 436965.057678f,4.212f);
     private Vector3D ZADKINE_STATUE_LOCATION = new Vector3D(92800f, 436955f,4f);
     private int desiredMapRadiusAroundStatue;
 
@@ -75,7 +73,6 @@ public class FileParser
 
     private boolean doesVectorLieWithinRadius(Vector3D vector)
     {
-        //TODO: Why minus?
         float thisVectorsXDistanceFromStatue = (float) Math.abs(this.ZADKINE_STATUE_LOCATION.getX() - vector.getX());
         float thisVectorsYDistanceFromStatue = (float) Math.abs(this.ZADKINE_STATUE_LOCATION.getY() - vector.getY());
 

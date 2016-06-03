@@ -33,7 +33,7 @@ public class ValueConverter
 
     public List<Vector3D> getAppletPositions()
     {
-        System.out.println("Started transforming to full map.");
+        System.out.println("Started transforming.");
 
         //I chose to transform an existing list instead of copying into a new one for performance reasons.
         //Not creating a new Vector here decreases readability, but increases performance.
@@ -41,7 +41,7 @@ public class ValueConverter
         {
             this.valuesList.set(i, convertCartesianVectorToAppletPosition(this.valuesList.get(i)));
         }
-        System.out.println("Done transforming to full map.");
+        System.out.println("Done transforming.");
         return this.valuesList;
     }
 

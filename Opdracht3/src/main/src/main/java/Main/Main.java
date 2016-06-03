@@ -53,10 +53,8 @@ public class Main extends PApplet
         background(220);
 
         pushMatrix();
-
         drawBoxes();
         drawWaterBoxes();
-
         popMatrix();
     }
 
@@ -78,48 +76,68 @@ public class Main extends PApplet
         }
     }
 
+    /*
+    float e = event.getCount();
+        scale = (float) (scale - e/5.0);
+        if (scale < 1)
+            scale = 1;
+        else if (scale > 3)
+            scale = 3;
+     */
 
     @Override
-    public void mouseWheel(MouseEvent event)
+    public void keyPressed()
     {
-        float currentScale = appletMetaData.getCurrentScale();
-        float maximumLevelOfZoom = 0.5f;
-        float minimumLevelOfZoom = 3.5f;
-
-        float amountOfScroll = event.getCount();
-
-        System.out.println(amountOfScroll);
-
-        //Diving by 5 in order to make the scroll-steps smaller
-        float newScroll = currentScale - (amountOfScroll / 5);
-        appletMetaData.setCurrentScale(newScroll);
-
-
-        if (currentScale < minimumLevelOfZoom) {
-            appletMetaData.setCurrentScale(minimumLevelOfZoom);
+        if(key == 'z')
+        {
+            increaseZoomLevel();
         }
-        else if (currentScale > maximumLevelOfZoom) {
-            appletMetaData.setCurrentScale(maximumLevelOfZoom);
+        else if(key == 'p')
+        {
+            pauseOrUnpause();
+        }
+        else if(key == 'r')
+        {
+            resetSimulation();
         }
     }
+
+    private void increaseZoomLevel()
+    {
+        float[] possibleZooms = appletMetaData.getZoomLevels();
+        int currentZoomLevelIndex = appletMetaData.getCurrentZoomLevelIndex();
+
+        //There are 4 zoomlevels total, cycling beyond the last one will reset the zoomlevel to the first.
+        if(currentZoomLevelIndex < 3)
+        {
+            appletMetaData.setCurrentScale(possibleZooms[currentZoomLevelIndex]);
+            appletMetaData.setCurrentZoomLevelIndex(currentZoomLevelIndex++);
+        }
+        else
+        {
+            appletMetaData.setCurrentScale(possibleZooms[0]);
+            appletMetaData.setCurrentZoomLevelIndex(0);
+        }
+    }
+
+    private void pauseOrUnpause()
+    {
+        if(appletMetaData.isPaused())
+            appletMetaData.setPaused(false);
+        else
+            appletMetaData.setPaused(true);
+    }
+
+    private void resetSimulation()
+    {
+        appletMetaData.setHoursPassed(0);
+        appletMetaData.setCurrentWaterHeight(0);
+    }
+
 
     /**
      * Drawing
      **/
-
-    /*
-    public void drawWaterHeight() {
-        if (!pauseStatus && waterHeight <= maxValueZ) {
-            waterHeight+=0.2f;
-            timePassed+=0.4f;
-        }
-        fill(0, 0 , 255, 96);
-        pushMatrix();
-        translate(0, 0, 0);
-        box(1000 * scale, 1000 * scale, (float) (waterHeight + 10) * 2 * scale);
-        popMatrix();
-    }
-    */
 
     private void drawWaterBoxes()
     {
@@ -129,9 +147,9 @@ public class Main extends PApplet
 
         if(appletMetaData.isPaused() == false)
         {
-            //Is this really half a meter?
+            //TODO Is this really half a meter?
             appletMetaData.setCurrentWaterHeight(currentWaterHeight + 0.15f);
-            //Do we really want to count hours?
+            //TODO Do we really want to count hours?
             appletMetaData.setHoursPassed(elapsedHours + 1);
         }
         else if(appletMetaData.getCurrentWaterHeight() < tallestVectorHeight)
@@ -152,11 +170,11 @@ public class Main extends PApplet
         popMatrix();
     }
 
+
     //TODO CHANGE THIS, AND UNDERSTAND IT
     private void drawBoxes()
     {
         System.out.println("Starting to draw.");
-        System.out.println("VECTORSIZE = " + vectorsToBeDrawn.size());
         noStroke();
 
         for(Vector3D vector : vectorsToBeDrawn)
@@ -222,7 +240,8 @@ public class Main extends PApplet
     {
         try
         {
-            appletMetaData.setCameraAngle(0);
+            //This angle ensures that the camera is focused on the zadkine statue.
+            appletMetaData.setCameraAngle(-3.577925f);
             appletMetaData.setCurrentScale(2);
 
             Path csvEast = Paths.get("oost.csv");
