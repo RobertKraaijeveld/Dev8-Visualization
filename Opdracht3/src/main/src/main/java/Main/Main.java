@@ -12,6 +12,7 @@ import processing.event.MouseEvent;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  *
@@ -85,24 +86,21 @@ public class Main extends PApplet
     private void drawBoxes()
     {
         System.out.println("Starting to draw.");
+        System.out.println("VECTORSIZE = " + vectorsToBeDrawn.size());
         noStroke();
 
         for(Vector3D vector : vectorsToBeDrawn)
         {
             float colorTint = this.calculateEllipseTint(vector);
-            fill(colorTint, colorTint, colorTint);
-
-            //ellipse(vector.getX(), vector.getY(), 0.5f, 0.5f);
+            fill(colorTint);
 
             pushMatrix();
-
             //clean this magic number mess
             translate((vector.getX() - 500.0f) * appletMetaData.getCurrentScale(),
                     (1000f - vector.getY() - 500f) * appletMetaData.getCurrentScale(), 0);
 
             box(2 * appletMetaData.getCurrentScale() , 2 * appletMetaData.getCurrentScale(),
                     (float) (vector.getZ() + 10) * 2 * appletMetaData.getCurrentScale());
-
             popMatrix();
 
         }
@@ -115,6 +113,39 @@ public class Main extends PApplet
         return (float) (tintMultiplicant * vector.getZ()) + 15;
     }
 
+    /**
+    * Main() and
+    **/
+
+
+    private int getUserMapSizeChoice()
+    {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome! Please specify how big you want the visualization to be in meters.");
+        System.out.println("Note that the center of the visualization will be the 'Destroyed City' statue in Rotterdam.");
+
+        //500 is the default value
+        int result = 500;
+
+        try
+        {
+            String currentLine = scanner.next();
+
+            if(currentLine != null && !currentLine.equals("")) {
+                result = Integer.parseInt(currentLine);
+            }
+            else {
+                System.out.println("Please fill in a valid numeric value.");
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println("Please fill in a valid numeric value..");
+        }
+        return result;
+    }
+
 
     public static void main(String[] args)
     {
@@ -124,7 +155,9 @@ public class Main extends PApplet
             appletMetaData.setCurrentScale(2);
 
             Path csvEast = Paths.get("oost.csv");
-            FileParser parser = new FileParser(csvEast);
+            int desiredMapRadius = 1000;
+
+            FileParser parser = new FileParser(csvEast, desiredMapRadius);
 
             TimeMeasurer.startTimer();
             ParsedFile parsedFile = parser.createParsedFileInstance();
@@ -134,9 +167,9 @@ public class Main extends PApplet
             GenericPair<Vector3D, Vector3D> largestXYVectors = parsedFile.getVectorsWithLargestXYs();
 
             ValueConverter converter = new ValueConverter(parsedFile.getSourceVectors(), smallestXYVectors,
-                                                          largestXYVectors, appletWidthHeightMaximums);
+                    largestXYVectors, appletWidthHeightMaximums);
 
-            vectorsToBeDrawn = converter.getAppletPositionsAroundStatueAreaRadius(500);
+            vectorsToBeDrawn = converter.getAppletPositions();
 
         }
         catch (Exception e)
