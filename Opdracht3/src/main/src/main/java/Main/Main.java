@@ -139,6 +139,7 @@ public class Main extends PApplet
     {
         //Draw controls
         //And hours/water level
+        text("TEST", 200, 200);
     }
 
 
@@ -155,26 +156,27 @@ public class Main extends PApplet
             //TODO Do we really want to count hours?
             appletMetaData.setHoursPassed(elapsedHours + 1);
         }
-        else if(appletMetaData.getCurrentWaterHeight() < tallestVectorHeight)
+        else if(appletMetaData.getCurrentWaterHeight() >= tallestVectorHeight)
         {
-            //TODO
+            appletMetaData.setPaused(true);
         }
 
         fill(0, 0, 255, 95);
 
         pushMatrix();
+
         //We do this to ensure that the water rises evenly across the whole map
         translate(0,0,0);
 
-        //TODO what are these magic numbers?
-        float waterBoxZ = (currentWaterHeight + 10) * (2 * appletMetaData.getCurrentScale());
+        float basicWaterBoxHeight = (currentWaterHeight + 10) * 2;
+        float waterBoxZ = basicWaterBoxHeight * appletMetaData.getCurrentScale();
+
         box(1000 * appletMetaData.getCurrentScale(), 1000 * appletMetaData.getCurrentScale(), waterBoxZ);
 
         popMatrix();
     }
 
 
-    //TODO CHANGE THIS, AND UNDERSTAND IT
     private void drawBoxes()
     {
         System.out.println("Starting to draw.");
@@ -186,12 +188,20 @@ public class Main extends PApplet
             fill(colorTint);
 
             pushMatrix();
-            //clean this magic number mess
-            translate((vector.getX() - 500.0f) * appletMetaData.getCurrentScale(),
-                    (1000f - vector.getY() - 500f) * appletMetaData.getCurrentScale(), 0);
+
+            //This is done to ensure the water surface beneath the map and the map itself are equal.
+            //Remeber that X and Y are both still 2D.
+            float xOffset = vector.getX() -500f;
+            float yOffSet = 1000f - vector.getY() - 500f;
+
+            translate((xOffset) * appletMetaData.getCurrentScale(),
+                    (yOffSet) * appletMetaData.getCurrentScale(), 0);
+
+            float baseBoxHeight = (vector.getZ() + 10) * 2;
 
             box(2 * appletMetaData.getCurrentScale() , 2 * appletMetaData.getCurrentScale(),
-                    (float) (vector.getZ() + 10) * 2 * appletMetaData.getCurrentScale());
+                baseBoxHeight * appletMetaData.getCurrentScale());
+
             popMatrix();
 
         }
@@ -261,7 +271,7 @@ public class Main extends PApplet
             smallestAndLargestZVectors = parsedFile.getSmallestAndLargestZvectors();
 
             ValueConverter converter = new ValueConverter(parsedFile.getSourceVectors(),
-                                            smallestXYVectors, largestXYVectors, appletWidthHeightMaximums);
+                                           smallestXYVectors, largestXYVectors, appletWidthHeightMaximums);
 
             vectorsToBeDrawn = converter.getAppletPositions();
         }
