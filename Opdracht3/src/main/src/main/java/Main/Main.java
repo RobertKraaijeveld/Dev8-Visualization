@@ -55,8 +55,9 @@ public class Main extends PApplet
         pushMatrix();
         drawBoxes();
         drawWaterBoxes();
-        drawLegend();
         popMatrix();
+
+        drawLegend();
     }
 
 
@@ -71,7 +72,6 @@ public class Main extends PApplet
         if (mouseButton == LEFT)
         {
             //pMouseX == previous frame mouse position
-            //what does - do
             float radiansToMoveBy = radians( -(mouseX - pmouseX));
             appletMetaData.setCameraAngle(appletMetaData.getCameraAngle() + (radiansToMoveBy / 2));
         }
@@ -137,9 +137,24 @@ public class Main extends PApplet
 
     private void drawLegend()
     {
-        //Draw controls
-        //And hours/water level
-        text("TEST", 200, 200);
+        fill(255, 0, 0);
+
+        hint(DISABLE_DEPTH_TEST);
+        camera();
+        noLights();
+
+        text("Hold left mouse button and drag to rotate the map", 20, 30);
+
+        text("Press Z to cycle through the zoom-levels.", 20, 50);
+        text("Press P to pause/start the simulation", 20, 70);
+        text("Press R to reset the simulation", 20, 90);
+
+        text("Paused: " + appletMetaData.isPaused(), 20, 110);
+
+        text("Water height: " + appletMetaData.getCurrentWaterHeight() + "m", 800, 30);
+        text("Time passed: " + appletMetaData.getHoursPassed() + " hours", 800, 50);
+
+        hint(ENABLE_DEPTH_TEST);
     }
 
 
@@ -224,7 +239,7 @@ public class Main extends PApplet
     {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Please specify how big you want the visualization to be in meters.");
+        System.out.println("Please specify how big you want the visualization to be in meters. Above 500, the FPS loss gets annoying.");
         System.out.println("Note that the center of the visualization will be the 'Destroyed City' statue in Rotterdam.");
 
         //500m radius is the default value

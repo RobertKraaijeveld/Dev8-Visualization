@@ -70,14 +70,9 @@ public class FileParser
 
     private boolean doesVectorLieWithinRadius(Vector3D vector)
     {
-        float thisVectorsXDistanceFromStatue = (float) Math.abs(this.ZADKINE_STATUE_LOCATION.getX() - vector.getX());
-        float thisVectorsYDistanceFromStatue = (float) Math.abs(this.ZADKINE_STATUE_LOCATION.getY() - vector.getY());
+        float thisVectorsXDistanceFromStatue = Math.abs(this.ZADKINE_STATUE_LOCATION.getX() - vector.getX());
+        float thisVectorsYDistanceFromStatue = Math.abs(this.ZADKINE_STATUE_LOCATION.getY() - vector.getY());
 
-        //TODO: TEMP
-        if(vector.getX() == ZADKINE_STATUE_LOCATION.getX() && vector.getY() == ZADKINE_STATUE_LOCATION.getY())
-        {
-            System.out.println(vector.getX() + "," + vector.getY());
-        }
 
         if(thisVectorsXDistanceFromStatue < this.desiredMapRadiusAroundStatue
         && thisVectorsYDistanceFromStatue < this.desiredMapRadiusAroundStatue)
