@@ -91,6 +91,10 @@ public class Main extends PApplet
         {
             pauseOrUnpause();
         }
+        else if(key == 's')
+        {
+            saveScreenShot();
+        }
         else if(key == 'r')
         {
             resetSimulation();
@@ -131,6 +135,12 @@ public class Main extends PApplet
         appletMetaData.setCurrentWaterHeight(-4);
     }
 
+    private void saveScreenShot()
+    {
+        saveFrame("FloodingVisualization-##.jpg");
+        System.out.println("Saved screenshot succesfully!");
+    }
+
 
     /**
      * Drawing
@@ -150,6 +160,7 @@ public class Main extends PApplet
         text("Press Z to cycle through the zoom-levels.", 20, 50);
         text("Press P to pause/start the simulation", 20, 70);
         text("Press R to reset the simulation", 20, 90);
+        text("Press S to save a screenshot of the simulation", 20, 110);
 
         text("Paused: " + appletMetaData.isPaused(), 20, 110);
 
