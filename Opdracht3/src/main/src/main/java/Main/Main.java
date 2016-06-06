@@ -46,7 +46,8 @@ public class Main extends PApplet
         clear();
         lights();
 
-        translate(width / 2, height / 2);
+        translate(appletWidthHeightMaximums.getLeftValue() / 2, appletWidthHeightMaximums.getRightValue() / 2);
+
         rotateX(1f);
         rotateZ(appletMetaData.getCameraAngle());
 
@@ -139,6 +140,7 @@ public class Main extends PApplet
     {
         fill(255, 0, 0);
 
+        //This function disables the Z-axis until ENABLE_DEPTH_TEST is called, so we can draw the legend in 2D.
         hint(DISABLE_DEPTH_TEST);
         camera();
         noLights();
@@ -160,35 +162,38 @@ public class Main extends PApplet
 
     private void drawWaterBoxes()
     {
-        float tallestVectorHeight = smallestAndLargestZVectors.getRightValue().getZ();
-        float currentWaterHeight = appletMetaData.getCurrentWaterHeight();
-        float elapsedHours = appletMetaData.getHoursPassed();
-
         if(appletMetaData.isPaused() == false)
         {
-            //TODO Is this really half a meter?
-            appletMetaData.setCurrentWaterHeight(currentWaterHeight + 0.15f);
-            //TODO Do we really want to count hours?
-            appletMetaData.setHoursPassed(elapsedHours + 1);
-        }
-        else if(appletMetaData.getCurrentWaterHeight() >= tallestVectorHeight)
-        {
-            appletMetaData.setPaused(true);
+            increaseWaterHeightValue();
         }
 
+        float currentWaterHeight = appletMetaData.getCurrentWaterHeight();
+
+        //Fill these boxes with the color blue.
         fill(0, 0, 255, 95);
 
-        pushMatrix();
 
-        //We do this to ensure that the water rises evenly across the whole map
-        translate(0,0,0);
+        //Ensure that the water rises evenly across the whole map
+        pushMatrix();
+        translate(0, 0, 0);
 
         float basicWaterBoxHeight = (currentWaterHeight + 10) * 2;
         float waterBoxZ = basicWaterBoxHeight * appletMetaData.getCurrentScale();
 
         box(1000 * appletMetaData.getCurrentScale(), 1000 * appletMetaData.getCurrentScale(), waterBoxZ);
-
         popMatrix();
+    }
+
+    private void increaseWaterHeightValue()
+    {
+        float currentWaterHeight = appletMetaData.getCurrentWaterHeight();
+        float waterHeightIncrease = appletMetaData.getWaterHeightIncreasePerHour();
+        float elapsedHours = appletMetaData.getHoursPassed();
+
+        appletMetaData.setCurrentWaterHeight(currentWaterHeight + waterHeightIncrease);
+        appletMetaData.setHoursPassed(elapsedHours + 1);
+
+
     }
 
 
@@ -234,33 +239,64 @@ public class Main extends PApplet
     * Main() and getting users choice
     **/
 
+    //TODO: Make these methods safer
 
-    private static int getUserMapSizeChoice()
+    private static GenericPair<Integer, Float> getUserParameterChoices()
     {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Please specify how big you want the visualization to be in meters. Above 500, the FPS loss gets annoying.");
-        System.out.println("Note that the center of the visualization will be the 'Destroyed City' statue in Rotterdam.");
-
-        //500m radius is the default value
-        int result = 500;
+        //500m radius and 0.15m increase in waterlevel per hour is the default setting
+        Integer radiusInput = 500;
+        Float waterIncreaseInput = 0.15f;
 
         try
         {
             String currentLine = scanner.next();
 
-            if(currentLine != null && !currentLine.equals("")) {
-                result = Integer.parseInt(currentLine);
+            if(currentLine != null && !currentLine.equals(""))
+            {
+                System.out.println("Please specify how big you want the visualization to be in meters. Above 500, the FPS loss gets annoying.");
+                System.out.println("Note that the center of the visualization will be the 'Destroyed City' statue in Rotterdam.");
+
+                radiusInput = askUserForMapSizeInput(currentLine);
+
+                scanner.next();
+                waterIncreaseInput = askUserForWaterLevelIncreaseInput(currentLine);
             }
-            else {
+            else
+            {
                 System.out.println("Please fill in a valid numeric value.");
             }
         }
         catch(Exception e)
         {
-            getUserMapSizeChoice();
+            getUserParameterChoices();
         }
-        return result;
+        return new GenericPair<>(radiusInput, waterIncreaseInput);
+    }
+
+    private static int askUserForMapSizeInput(String currentInputLine) throws NumberFormatException
+    {
+        Integer resultInt = Integer.parseInt(currentInputLine);
+
+        if(resultInt > 0)
+                return resultInt;
+        else
+            getUserParameterChoices();
+
+        return resultInt;
+    }
+
+    private static float askUserForWaterLevelIncreaseInput(String currentInputLine) throws NumberFormatException
+    {
+        Float resultFloat = Float.parseFloat(currentInputLine);
+
+        if(resultFloat > 0)
+            return resultFloat;
+        else
+            getUserParameterChoices();
+
+        return resultFloat;
     }
 
 
