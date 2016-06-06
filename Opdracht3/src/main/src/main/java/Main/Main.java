@@ -239,15 +239,16 @@ public class Main extends PApplet
     * Main() and getting users choice
     **/
 
-    //TODO: Make these methods safer
-
-    private static GenericPair<Integer, Float> getUserParameterChoices()
+    //TODO: Make these methods cleaner
+    private static int askUserForMapSizeInput()
     {
         Scanner scanner = new Scanner(System.in);
 
-        //500m radius and 0.15m increase in waterlevel per hour is the default setting
+        System.out.println("Please specify how big you want the visualization to be in meters. Above 500, the FPS loss gets annoying.");
+        System.out.println("Note that the center of the visualization will be the 'Destroyed City' statue in Rotterdam.");
+
+        //500m radius is the default setting
         Integer radiusInput = 500;
-        Float waterIncreaseInput = 0.15f;
 
         try
         {
@@ -255,48 +256,55 @@ public class Main extends PApplet
 
             if(currentLine != null && !currentLine.equals(""))
             {
-                System.out.println("Please specify how big you want the visualization to be in meters. Above 500, the FPS loss gets annoying.");
-                System.out.println("Note that the center of the visualization will be the 'Destroyed City' statue in Rotterdam.");
-
-                radiusInput = askUserForMapSizeInput(currentLine);
-
-                scanner.next();
-                waterIncreaseInput = askUserForWaterLevelIncreaseInput(currentLine);
+                radiusInput = Integer.parseInt(currentLine);
             }
             else
             {
                 System.out.println("Please fill in a valid numeric value.");
             }
         }
-        catch(Exception e)
+        catch(NumberFormatException e)
         {
-            getUserParameterChoices();
+            askUserForMapSizeInput();
         }
-        return new GenericPair<>(radiusInput, waterIncreaseInput);
+
+        if(radiusInput > 0)
+            return radiusInput;
+        else
+            return askUserForMapSizeInput();
     }
 
-    private static int askUserForMapSizeInput(String currentInputLine) throws NumberFormatException
+    private static float askUserForWaterRiseInput()
     {
-        Integer resultInt = Integer.parseInt(currentInputLine);
+        Scanner scanner = new Scanner(System.in);
 
-        if(resultInt > 0)
-                return resultInt;
+        System.out.println("Please specify by how much meters you want the water to rise per hour.");
+
+        //500m radius is the default setting
+        Float waterRiseInput = 0.15f;
+
+        try
+        {
+            String currentLine = scanner.next();
+
+            if(currentLine != null && !currentLine.equals(""))
+            {
+                waterRiseInput = Float.parseFloat(currentLine);
+            }
+            else
+            {
+                System.out.println("Please fill in a valid numeric value.");
+            }
+        }
+        catch(NumberFormatException e)
+        {
+            askUserForMapSizeInput();
+        }
+
+        if(waterRiseInput > 0)
+            return waterRiseInput;
         else
-            getUserParameterChoices();
-
-        return resultInt;
-    }
-
-    private static float askUserForWaterLevelIncreaseInput(String currentInputLine) throws NumberFormatException
-    {
-        Float resultFloat = Float.parseFloat(currentInputLine);
-
-        if(resultFloat > 0)
-            return resultFloat;
-        else
-            getUserParameterChoices();
-
-        return resultFloat;
+            return askUserForMapSizeInput();
     }
 
 
@@ -304,12 +312,14 @@ public class Main extends PApplet
     {
         try
         {
+            Path csvEast = Paths.get("oost.csv");
+            int desiredMapRadius = askUserForMapSizeInput();
+            float desiredWaterRise = askUserForWaterRiseInput();
+
             //This angle ensures that the camera is focused on the zadkine statue.
             appletMetaData.setCameraAngle(-3.577925f);
             appletMetaData.setCurrentScale(2);
-
-            Path csvEast = Paths.get("oost.csv");
-            int desiredMapRadius = getUserMapSizeChoice();
+            appletMetaData.setWaterHeightIncreasePerHour(desiredWaterRise);
 
             FileParser parser = new FileParser(csvEast, ZADKINE_STATUE_VECTOR, desiredMapRadius);
 
