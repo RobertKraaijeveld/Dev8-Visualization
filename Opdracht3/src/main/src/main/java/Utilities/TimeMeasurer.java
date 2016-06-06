@@ -11,7 +11,6 @@ public class TimeMeasurer
 
     public static void startTimer()
     {
-        System.out.println("TimeMeasurer: Started the timer.");
         startTime = System.currentTimeMillis();
     }
 

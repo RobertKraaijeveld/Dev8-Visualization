@@ -6,8 +6,13 @@ import FileParsing.FileParser;
 import FileParsing.ParsedFile;
 import Plotting.ValueConverter;
 import Utilities.TimeMeasurer;
-import processing.core.PApplet;
 
+import processing.core.PApplet;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -137,8 +142,27 @@ public class Main extends PApplet
 
     private void saveScreenShot()
     {
-        saveFrame("FloodingVisualization-##.jpg");
-        System.out.println("Saved screenshot succesfully!");
+        try
+        {
+            saveFrame("FloodingVisualization-##.jpg");
+            playPhotoClickSound();
+
+            System.out.println("Saved screenshot succesfully!");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void playPhotoClickSound() throws Exception
+    {
+        String soundFile = "photoclick.wav";
+        InputStream inputStream = new FileInputStream(soundFile);
+
+        AudioStream audioStream = new AudioStream(inputStream);
+
+        AudioPlayer.player.start(audioStream);
     }
 
 
@@ -162,8 +186,7 @@ public class Main extends PApplet
         text("Press R to reset the simulation", 20, 90);
         text("Press S to save a screenshot of the simulation", 20, 110);
 
-        text("Paused: " + appletMetaData.isPaused(), 20, 110);
-
+        text("Paused: " + appletMetaData.isPaused(), 800, 70);
         text("Water height: " + appletMetaData.getCurrentWaterHeight() + "m", 800, 30);
         text("Time passed: " + appletMetaData.getHoursPassed() + " hours", 800, 50);
 
