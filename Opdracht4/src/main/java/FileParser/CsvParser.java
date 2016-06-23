@@ -1,6 +1,7 @@
 package FileParser;
 
 import Datastructures.RawAdress;
+import Utilities.Utilities;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -14,10 +15,12 @@ public class CsvParser
     //This allows the programmer to specify which CSV columns contain his desired values.
     //IE: 0,1,2 would result in the first 3 CSV values being taken.
     private ArrayList<Integer> indexesOfDesiredLineValues;
+    private int locationOfComplaintTypeLineValue;
 
-    public CsvParser(ArrayList<Integer> indexesOfDesiredLineValues)
+    public CsvParser(ArrayList<Integer> indexesOfDesiredLineValues, int locationOfComplaintTypeLineValue)
     {
         this.indexesOfDesiredLineValues = indexesOfDesiredLineValues;
+        this.locationOfComplaintTypeLineValue = locationOfComplaintTypeLineValue;
     }
 
     public ParsedAdressesFile parseGivenFile(String filePath) throws Exception
@@ -31,12 +34,22 @@ public class CsvParser
 
         while((currentLine = reader.readLine()) != null)
         {
-            ArrayList<String> currentLineValues = this.splitLineByComma(currentLine);
-            RawAdress rawAdress = this.constructRawAdress(currentLineValues);
-            rawAdressesInCsv.add(rawAdress);
+            ArrayList<String> currentLineValues = Utilities.splitStringByDelimiter(currentLine, ",");
+
+            if (isLineOfRightComplaintType(currentLineValues)) {
+                RawAdress rawAdress = this.constructRawAdress(currentLineValues);
+                rawAdressesInCsv.add(rawAdress);
+            }
         }
         ParsedAdressesFile returnFile = new ParsedAdressesFile(rawAdressesInCsv);
         return returnFile;
+    }
+
+    private boolean isLineOfRightComplaintType(ArrayList<String> currentLineValues) {
+        if (currentLineValues.get(locationOfComplaintTypeLineValue).equals("Stank"))
+            return true;
+        else
+            return false;
     }
 
     private RawAdress constructRawAdress(ArrayList<String> unfilteredLine)
@@ -52,12 +65,4 @@ public class CsvParser
         }
         return new RawAdress(filteredLine.get(0), filteredLine.get(1), filteredLine.get(2));
     }
-
-    private ArrayList<String> splitLineByComma(String currentLine)
-    {
-        String[] splitLineValues = currentLine.split(",");
-        return new ArrayList<>(Arrays.asList(splitLineValues));
-    }
-
-
 }

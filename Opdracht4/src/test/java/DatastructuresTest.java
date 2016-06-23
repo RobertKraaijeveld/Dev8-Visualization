@@ -32,9 +32,8 @@ public class DatastructuresTest
     @Test
     public void complaintLocationGettersTest()
     {
-        ComplaintLocation complaintLocation = new ComplaintLocation("test", 0.0f, 1.0f);
+        ComplaintLocation complaintLocation = new ComplaintLocation(0.0f, 1.0f);
 
-        assertEquals("test", complaintLocation.getSeverity());
         assertEquals(0.0f, complaintLocation.getLatitude(), DELTA);
         assertEquals(1.0f, complaintLocation.getLongitude(), DELTA);
     }

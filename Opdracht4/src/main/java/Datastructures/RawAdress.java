@@ -7,23 +7,36 @@ package Datastructures;
 //I should have coded this to an interface. Food for thought.
 public class RawAdress
 {
-    private String adress;
+    private String street;
     private String zipCode;
     private String city;
 
-    public RawAdress(String adress, String zipCode, String city)
+    public RawAdress(String street, String zipCode, String city)
     {
-        this.adress = adress;
+        this.street = street;
         this.zipCode = zipCode;
         this.city = city;
     }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
 
     @Override
     public boolean equals(Object anotherObject)
     {
         RawAdress anotherAdress = (RawAdress) anotherObject;
 
-        if(this.adress.equals(anotherAdress.adress) &&
+        if (this.street.equals(anotherAdress.street) &&
            this.zipCode.equals(anotherAdress.zipCode) &&
            this.city.equals(anotherAdress.city))
         {

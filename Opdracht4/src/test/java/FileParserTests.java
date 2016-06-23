@@ -18,7 +18,7 @@ public class FileParserTests
 
     private void setupTestData()
     {
-        RawAdress testAdress = new RawAdress("test","test","test");
+        RawAdress testAdress = new RawAdress("Van Ostadelaan", "3117XM", "SCHIEDAM");
         this.expectedAdressesList.add(testAdress);
 
         ParsedAdressesFile parsedAdressesFileFixture = new ParsedAdressesFile(this.expectedAdressesList);
@@ -35,12 +35,13 @@ public class FileParserTests
     {
         setupTestData();
 
+        int complaintTypeIndexInCsv = 6;
         ArrayList<Integer> desiredIndexesInFile = new ArrayList<Integer>();
-        desiredIndexesInFile.add(0);
-        desiredIndexesInFile.add(1);
-        desiredIndexesInFile.add(2);
+        desiredIndexesInFile.add(3);
+        desiredIndexesInFile.add(4);
+        desiredIndexesInFile.add(5);
 
-        CsvParser parser = new CsvParser(desiredIndexesInFile);
+        CsvParser parser = new CsvParser(desiredIndexesInFile, complaintTypeIndexInCsv);
 
         try
         {
