@@ -4,6 +4,7 @@
 
 import static org.junit.Assert.assertTrue;
 
+import Datastructures.GenericPair;
 import Datastructures.RawAdress;
 import FileParser.CsvParser;
 import FileParser.ParsedAdressesFile;
@@ -18,8 +19,11 @@ public class FileParserTests
 
     private void setupTestData()
     {
-        RawAdress testAdress = new RawAdress("Van Ostadelaan", "3117XM", "SCHIEDAM");
-        this.expectedAdressesList.add(testAdress);
+        RawAdress firstTestAdress = new RawAdress("Saenredamplein", "3043RL", "ROTTERDAM", "Stank");
+        RawAdress secondTestAdress = new RawAdress("Zuidhoek", "3082PP", "ROTTERDAM", "Stank");
+
+        this.expectedAdressesList.add(firstTestAdress);
+        this.expectedAdressesList.add(secondTestAdress);
 
         ParsedAdressesFile parsedAdressesFileFixture = new ParsedAdressesFile(this.expectedAdressesList);
     }
@@ -36,12 +40,15 @@ public class FileParserTests
         setupTestData();
 
         int complaintTypeIndexInCsv = 6;
-        ArrayList<Integer> desiredIndexesInFile = new ArrayList<Integer>();
+        int cityIndexInCsv = 5;
+        GenericPair<Integer, Integer> complaintAndCityIndexInCsvPair = new GenericPair<>(complaintTypeIndexInCsv, cityIndexInCsv);
+
+        ArrayList<Integer> desiredIndexesInFile = new ArrayList<>();
         desiredIndexesInFile.add(3);
         desiredIndexesInFile.add(4);
         desiredIndexesInFile.add(5);
 
-        CsvParser parser = new CsvParser(desiredIndexesInFile, complaintTypeIndexInCsv);
+        CsvParser parser = new CsvParser(desiredIndexesInFile, complaintAndCityIndexInCsvPair);
 
         try
         {
@@ -54,7 +61,6 @@ public class FileParserTests
         {
             e.printStackTrace();
         }
-
         tearDownTestData();
     }
 
@@ -63,8 +69,8 @@ public class FileParserTests
     {
         setupTestData();
 
-        ParsedAdressesFile parsedAdressesFileFixture = new ParsedAdressesFile(this.expectedAdressesList);
-        assertTrue(parsedAdressesFileFixture.getAdresses().equals(this.expectedAdressesList));
+        this.expectedParsedAdressesFile = new ParsedAdressesFile(this.expectedAdressesList);
+        assertTrue(this.expectedParsedAdressesFile.getAdresses().equals(this.expectedAdressesList));
 
         tearDownTestData();
     }

@@ -23,4 +23,19 @@ public class ComplaintLocation
     public float getLongitude() {
         return longitude;
     }
+
+    @Override
+    public boolean equals(Object anotherObject)
+    {
+        ComplaintLocation anotherComplaintLocation = (ComplaintLocation) anotherObject;
+
+        if ((this.latitude == anotherComplaintLocation.latitude)
+                && (this.longitude == anotherComplaintLocation.longitude))
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
 }

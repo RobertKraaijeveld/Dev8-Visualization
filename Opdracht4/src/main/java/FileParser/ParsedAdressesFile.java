@@ -19,7 +19,8 @@ public class ParsedAdressesFile
         this.adresses = adresses;
     }
 
-    public ArrayList<RawAdress> getAdresses() {
+    public ArrayList<RawAdress> getAdresses()
+    {
         return this.adresses;
     }
 }

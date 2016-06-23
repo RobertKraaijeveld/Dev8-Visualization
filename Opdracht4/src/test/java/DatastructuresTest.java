@@ -42,9 +42,9 @@ public class DatastructuresTest
     @Test
     public void rawAdressEqualsTest()
     {
-        RawAdress firstRawAdress = new RawAdress("test", "test", "test");
-        RawAdress secondRawAdress = new RawAdress("test", "test", "test");
-        RawAdress badRawAdress = new RawAdress("nottest", "nottest", "nottest");
+        RawAdress firstRawAdress = new RawAdress("test", "test", "test", "Stank");
+        RawAdress secondRawAdress = new RawAdress("test", "test", "test", "Stank");
+        RawAdress badRawAdress = new RawAdress("nottest", "nottest", "nottest", "Stank");
 
         assertTrue(firstRawAdress.equals(secondRawAdress));
         assertFalse(firstRawAdress.equals(badRawAdress));

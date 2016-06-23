@@ -10,12 +10,14 @@ public class RawAdress
     private String street;
     private String zipCode;
     private String city;
+    private String complaintType;
 
-    public RawAdress(String street, String zipCode, String city)
+    public RawAdress(String street, String zipCode, String city, String complaintType)
     {
         this.street = street;
         this.zipCode = zipCode;
         this.city = city;
+        this.complaintType = complaintType;
     }
 
     public String getStreet() {
@@ -30,6 +32,10 @@ public class RawAdress
         return city;
     }
 
+    public String getComplaintType()
+    {
+        return complaintType;
+    }
 
     @Override
     public boolean equals(Object anotherObject)
@@ -38,7 +44,8 @@ public class RawAdress
 
         if (this.street.equals(anotherAdress.street) &&
            this.zipCode.equals(anotherAdress.zipCode) &&
-           this.city.equals(anotherAdress.city))
+                this.city.equals(anotherAdress.city) &&
+                this.complaintType.equals(anotherAdress.complaintType))
         {
             return true;
         }

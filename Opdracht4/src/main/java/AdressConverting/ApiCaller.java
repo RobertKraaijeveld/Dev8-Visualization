@@ -2,6 +2,7 @@ package AdressConverting;
 
 import Datastructures.ComplaintLocation;
 import Datastructures.RawAdress;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -12,36 +13,51 @@ import java.util.ArrayList;
 /**
  * Created by Kraaijeveld on 22-6-2016.
  */
-public class ApiCaller {
-    public void populateCsvFileWithApiResults(ArrayList<RawAdress> rawAdressesList) throws Exception {
-        for (RawAdress rawAdress : rawAdressesList) {
-            ComplaintLocation thisAdressesComplaintLocation = this.getLatLongFromGoogleAPI(rawAdress);
-            this.addLineToCsv(thisAdressesComplaintLocation);
+public class ApiCaller
+{
+    public void populateCsvFileWithApiResults(ArrayList<RawAdress> rawAdressesList, File csvFileToPopulate) throws Exception
+    {
+        int i = 0;
+        for (RawAdress rawAdress : rawAdressesList)
+        {
+            if (this.isRawAdressOfRightType(rawAdress) == true)
+            {
+                //TODO REMOVE THIS AND MAKE ALGO MORE EFFICIENT
+                i++;
+                if (i % 100 == 0)
+                    System.out.println(i + " adresses done.");
+
+                ComplaintLocation thisAdressesComplaintLocation = this.getLatLongFromGoogleAPI(rawAdress);
+                this.addLineToCsv(thisAdressesComplaintLocation, csvFileToPopulate);
+            }
         }
     }
 
-    public void createResultCSVFile() throws IOException {
-        File file = new File("latlongs.csv");
-        file.createNewFile();
+    public void createResultCSVFile(File csvFileToCreate) throws IOException
+    {
+        csvFileToCreate.createNewFile();
     }
 
-    private ComplaintLocation getLatLongFromGoogleAPI(RawAdress rawAdress) {
+    private ComplaintLocation getLatLongFromGoogleAPI(RawAdress rawAdress)
+    {
         //This is dirty
         ComplaintLocation returnLocation = null;
 
-        try {
-            String apiResponse = getUrlReturnString(this.constructApiURL(rawAdress));
+        try
+        {
+            String apiResponse = this.getUrlReturnString(this.constructApiURL(rawAdress));
             JSONObject jsonObject = this.getJSONObject(apiResponse);
 
-            Float latitude = (float) jsonObject.getDouble("lat");
-            Float longitude = (float) jsonObject.getDouble("lng");
+            JSONArray resultArray = jsonObject.getJSONArray("results");
+            JSONObject latLongObject = resultArray.getJSONObject(0).getJSONObject("geometry").getJSONObject("location");
 
-            System.out.println("Lat " + latitude);
-            System.out.println("Lng " + longitude);
+            Float latitude = (float) latLongObject.getDouble("lat");
+            Float longitude = (float) latLongObject.getDouble("lng");
 
             returnLocation = new ComplaintLocation(latitude, longitude);
             return returnLocation;
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             ex.printStackTrace();
         }
         return returnLocation;
@@ -51,13 +67,14 @@ public class ApiCaller {
      * URL CONTENTS READING
      **/
 
-    private String constructApiURL(RawAdress rawAdress) throws Exception {
+    private URL constructApiURL(RawAdress rawAdress) throws Exception
+    {
         String street = rawAdress.getStreet();
         String city = rawAdress.getCity();
         String zipCode = rawAdress.getZipCode();
 
-        String googleApisPartOfURL = "https://maps.googleapis.com/maps/api/geocode/json?";
-        String adressPartOfURL = "address=";
+        String googleApisPartOfURL = "https://maps.googleapis.com";
+        String adressPartOfURL = "/maps/api/geocode/json?address=";
 
         adressPartOfURL += street;
         adressPartOfURL += ",";
@@ -67,15 +84,27 @@ public class ApiCaller {
 
         String apiKeyPartOfURL = "&key=AIzaSyCplgG4qwTJOGMQZUfMgm5wzSf5-Y8ytLo";
 
-        String finalHttpRequestString = googleApisPartOfURL + adressPartOfURL + apiKeyPartOfURL;
-        return finalHttpRequestString;
+        String finalUrlString = googleApisPartOfURL += adressPartOfURL += apiKeyPartOfURL;
+        finalUrlString = finalUrlString.replaceAll(" ", "");
+
+        return new URL(finalUrlString);
     }
 
-    private String getUrlReturnString(String urlString) throws Exception {
+    private boolean isRawAdressOfRightType(RawAdress adressToCheck)
+    {
+        if (adressToCheck.getComplaintType().equals("Stank")
+                && adressToCheck.getCity().equals("ROTTERDAM"))
+        {
+            return true;
+        } else
+            return false;
+    }
+
+    private String getUrlReturnString(URL url) throws Exception
+    {
         BufferedReader reader = null;
 
-        URI uri = new URI(urlString);
-        reader = new BufferedReader(new InputStreamReader(uri.toURL().openStream()));
+        reader = new BufferedReader(new InputStreamReader(url.openStream()));
         StringBuffer buffer = new StringBuffer();
 
         int read;
@@ -89,13 +118,15 @@ public class ApiCaller {
         return buffer.toString();
     }
 
-    public JSONObject getJSONObject(String url) {
-        //Dirtyyyyyy
+    public JSONObject getJSONObject(String jsonText)
+    {
+        //Potentially returning null is quite dirty.
         JSONObject jsonObject = null;
-        try {
-            String jsonText = getUrlReturnString(url);
+        try
+        {
             jsonObject = new JSONObject(jsonText);
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
         return jsonObject;
@@ -107,8 +138,9 @@ public class ApiCaller {
     *
      */
 
-    private void addLineToCsv(ComplaintLocation complaintLocationToBeAdded) throws Exception {
-        FileWriter csvFile = new FileWriter("latlongs.csv", true);
+    private void addLineToCsv(ComplaintLocation complaintLocationToBeAdded, File csvFileToPopulate) throws IOException
+    {
+        FileWriter csvFile = new FileWriter(csvFileToPopulate, true);
 
         csvFile.append(String.valueOf(complaintLocationToBeAdded.getLatitude()));
         csvFile.append(",");
