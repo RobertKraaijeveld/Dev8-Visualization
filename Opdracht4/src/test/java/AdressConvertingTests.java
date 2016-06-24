@@ -56,41 +56,4 @@ public class AdressConvertingTests
 
         assertTrue(this.expectedComplaintLocation.equals(actualComplaintLocationList.get(0)));
     }
-
-    @Test
-    public void adressComplaintTypeShouldBeCorrectlyVerified()
-    {
-        ArrayList<Integer> desiredIndexesInFile = new ArrayList<Integer>();
-        desiredIndexesInFile.add(3);
-        desiredIndexesInFile.add(4);
-        desiredIndexesInFile.add(5);
-
-        int complaintTypeIndexInCsv = 6;
-        int cityIndexInCsv = 5;
-        GenericPair<Integer, Integer> complaintAndCityIndexInCsvPair = new GenericPair<>(complaintTypeIndexInCsv, cityIndexInCsv);
-
-        ApiCaller apiCaller = new ApiCaller();
-
-        RawAdress badAdress = new RawAdress("Langemeetstraat", "3223BL", "ROTTERDAM", "Lawaai");
-        RawAdress goodAdress = new RawAdress("Langemeetstraat", "3223BL", "ROTTERDAM", "Stank");
-
-        //All the stuff until the asserts is done to make the method we're testing temporarily publicy available.
-        Class[] argumentType = new Class[1];
-        argumentType[0] = RawAdress.class;
-
-        try
-        {
-            Method publicVersionOfisRawAdressOfRightType = ApiCaller.class.getDeclaredMethod("isRawAdressOfRightType", argumentType);
-            publicVersionOfisRawAdressOfRightType.setAccessible(true);
-
-            boolean badCsvLinePartsResult = (boolean) publicVersionOfisRawAdressOfRightType.invoke(apiCaller, badAdress);
-            boolean goodCsvLinePartsResult = (boolean) publicVersionOfisRawAdressOfRightType.invoke(apiCaller, goodAdress);
-
-            assertFalse(badCsvLinePartsResult);
-            assertTrue(goodCsvLinePartsResult);
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
 }

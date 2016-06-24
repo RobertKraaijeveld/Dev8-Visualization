@@ -37,6 +37,16 @@ public class RawAdress
         return complaintType;
     }
 
+    public boolean isRawAdressOfRightType()
+    {
+        if (this.complaintType.equals("Stank")
+                && this.city.equals("ROTTERDAM"))
+        {
+            return true;
+        } else
+            return false;
+    }
+
     @Override
     public boolean equals(Object anotherObject)
     {

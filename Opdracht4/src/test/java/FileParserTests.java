@@ -48,7 +48,8 @@ public class FileParserTests
         desiredIndexesInFile.add(4);
         desiredIndexesInFile.add(5);
 
-        CsvParser parser = new CsvParser(desiredIndexesInFile, complaintAndCityIndexInCsvPair);
+        CsvParser parser = new CsvParser(desiredIndexesInFile);
+        parser.setComplaintAndCityLineValueIndexes(complaintAndCityIndexInCsvPair);
 
         try
         {

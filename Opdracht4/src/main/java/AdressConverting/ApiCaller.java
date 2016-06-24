@@ -17,16 +17,11 @@ public class ApiCaller
 {
     public void populateCsvFileWithApiResults(ArrayList<RawAdress> rawAdressesList, File csvFileToPopulate) throws Exception
     {
-        int i = 0;
         for (RawAdress rawAdress : rawAdressesList)
         {
-            if (this.isRawAdressOfRightType(rawAdress) == true)
+            if (rawAdress.isRawAdressOfRightType() == true)
             {
-                //TODO REMOVE THIS AND MAKE ALGO MORE EFFICIENT
-                i++;
-                if (i % 100 == 0)
-                    System.out.println(i + " adresses done.");
-
+                //TODO MAKE ALGO MORE EFFICIENT
                 ComplaintLocation thisAdressesComplaintLocation = this.getLatLongFromGoogleAPI(rawAdress);
                 this.addLineToCsv(thisAdressesComplaintLocation, csvFileToPopulate);
             }
@@ -35,6 +30,7 @@ public class ApiCaller
 
     public void createResultCSVFile(File csvFileToCreate) throws IOException
     {
+
         csvFileToCreate.createNewFile();
     }
 
@@ -46,10 +42,15 @@ public class ApiCaller
         try
         {
             String apiResponse = this.getUrlReturnString(this.constructApiURL(rawAdress));
+
             JSONObject jsonObject = this.getJSONObject(apiResponse);
 
             JSONArray resultArray = jsonObject.getJSONArray("results");
-            JSONObject latLongObject = resultArray.getJSONObject(0).getJSONObject("geometry").getJSONObject("location");
+
+            JSONObject resultObject = (JSONObject) resultArray.get(0);
+            JSONObject latLongObject = resultObject.getJSONObject("geometry").getJSONObject("location");
+
+            System.out.println(latLongObject.toString());
 
             Float latitude = (float) latLongObject.getDouble("lat");
             Float longitude = (float) latLongObject.getDouble("lng");
@@ -85,19 +86,12 @@ public class ApiCaller
         String apiKeyPartOfURL = "&key=AIzaSyCplgG4qwTJOGMQZUfMgm5wzSf5-Y8ytLo";
 
         String finalUrlString = googleApisPartOfURL += adressPartOfURL += apiKeyPartOfURL;
+
+        //TODO EXTRACT TO METHOD
         finalUrlString = finalUrlString.replaceAll(" ", "");
+        finalUrlString = finalUrlString.replace("ü", "ue");
 
         return new URL(finalUrlString);
-    }
-
-    private boolean isRawAdressOfRightType(RawAdress adressToCheck)
-    {
-        if (adressToCheck.getComplaintType().equals("Stank")
-                && adressToCheck.getCity().equals("ROTTERDAM"))
-        {
-            return true;
-        } else
-            return false;
     }
 
     private String getUrlReturnString(URL url) throws Exception
@@ -137,6 +131,13 @@ public class ApiCaller
      Appending to CSV helpers
     *
      */
+
+    private String sanitizeUrl(String urlString)
+    {
+        urlString = urlString.replaceAll(" ", "");
+        urlString = urlString.replace("ü", "ue");
+        return urlString;
+    }
 
     private void addLineToCsv(ComplaintLocation complaintLocationToBeAdded, File csvFileToPopulate) throws IOException
     {

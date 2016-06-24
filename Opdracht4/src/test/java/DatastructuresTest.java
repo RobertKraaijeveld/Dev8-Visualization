@@ -1,3 +1,4 @@
+import AdressConverting.ApiCaller;
 import Datastructures.ComplaintLocation;
 import Datastructures.GenericPair;
 import Datastructures.RawAdress;
@@ -5,6 +6,7 @@ import FileParser.CsvParser;
 import FileParser.ParsedAdressesFile;
 import org.junit.Test;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
@@ -49,5 +51,28 @@ public class DatastructuresTest
         assertTrue(firstRawAdress.equals(secondRawAdress));
         assertFalse(firstRawAdress.equals(badRawAdress));
         assertFalse(secondRawAdress.equals(badRawAdress));
+    }
+
+    @Test
+    public void rawAdressComplaintTypeShouldBeCorrectlyVerified()
+    {
+        RawAdress badAdress = new RawAdress("Langemeetstraat", "3223BL", "ROTTERDAM", "Lawaai");
+        RawAdress goodAdress = new RawAdress("Langemeetstraat", "3223BL", "ROTTERDAM", "Stank");
+
+        //All the stuff until the asserts is done to make the method we're testing temporarily publicy available.
+        try
+        {
+            Method publicVersionOfIsRawAdressOfRightType = RawAdress.class.getDeclaredMethod("isRawAdressOfRightType");
+            publicVersionOfIsRawAdressOfRightType.setAccessible(true);
+
+            boolean badAdressTypeTestResult = (boolean) publicVersionOfIsRawAdressOfRightType.invoke(badAdress);
+            boolean goodAdressTypeTestResult = (boolean) publicVersionOfIsRawAdressOfRightType.invoke(goodAdress);
+
+            assertFalse(badAdressTypeTestResult);
+            assertTrue(goodAdressTypeTestResult);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }

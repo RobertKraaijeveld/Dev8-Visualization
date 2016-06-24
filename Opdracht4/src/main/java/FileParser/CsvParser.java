@@ -6,6 +6,7 @@ import Utilities.Utilities;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by Kraaijeveld on 21-6-2016.
@@ -20,9 +21,13 @@ public class CsvParser
     private ArrayList<Integer> indexesOfDesiredLineValues;
     GenericPair<Integer, Integer> complaintAndCityLineValueIndexes;
 
-    public CsvParser(ArrayList<Integer> indexesOfDesiredLineValues, GenericPair<Integer, Integer> complaintAndCityLineValueIndexes)
+    public CsvParser(ArrayList<Integer> indexesOfDesiredLineValues)
     {
         this.indexesOfDesiredLineValues = indexesOfDesiredLineValues;
+    }
+
+    public void setComplaintAndCityLineValueIndexes(GenericPair<Integer, Integer> complaintAndCityLineValueIndexes)
+    {
         this.complaintAndCityLineValueIndexes = complaintAndCityLineValueIndexes;
     }
 
@@ -37,15 +42,19 @@ public class CsvParser
 
         while((currentLine = reader.readLine()) != null)
         {
-            ArrayList<String> currentLineValues = Utilities.splitStringByDelimiter(currentLine, ",");
-            RawAdress rawAdress = this.constructRawAdress(currentLineValues);
-            rawAdressesInCsv.add(rawAdress);
+            //Weird, why is this necessary?
+            if (!currentLine.equals(""))
+            {
+                ArrayList<String> currentLineValues = Utilities.splitStringByDelimiter(currentLine, ",");
+                RawAdress rawAdress = this.constructRawAdress(currentLineValues);
+                rawAdressesInCsv.add(rawAdress);
+            }
         }
         ParsedAdressesFile returnFile = new ParsedAdressesFile(rawAdressesInCsv);
         return returnFile;
     }
 
-    private RawAdress constructRawAdress(ArrayList<String> unfilteredLine)
+    protected RawAdress constructRawAdress(ArrayList<String> unfilteredLine)
     {
         ArrayList<String> filteredLine = new ArrayList<>();
 
