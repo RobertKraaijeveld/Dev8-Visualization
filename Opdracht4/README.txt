@@ -1,0 +1,1 @@
+Rotterdam image courtesy of: Door Dr. Blofeld - Maps for Free/OpenStreetMap. Insert is File:Netherlands location map.svg by Lencer, CC BY-SA 2.0, https://commons.wikimedia.org/w/index.php?curid=19320073
