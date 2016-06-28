@@ -83,13 +83,13 @@ public class ApiCaller
         adressPartOfURL += ",";
         adressPartOfURL += city;
 
-        String apiKeyPartOfURL = "&key=AIzaSyCplgG4qwTJOGMQZUfMgm5wzSf5-Y8ytLo";
+        String apiKeyPartOfURL = "&key=getYourOwnBloodyApiKey";
 
         String finalUrlString = googleApisPartOfURL += adressPartOfURL += apiKeyPartOfURL;
 
         //TODO EXTRACT TO METHOD
         finalUrlString = finalUrlString.replaceAll(" ", "");
-        finalUrlString = finalUrlString.replace("ü", "ue");
+        finalUrlString = finalUrlString.replace("Ã¼", "ue");
 
         return new URL(finalUrlString);
     }
@@ -135,7 +135,7 @@ public class ApiCaller
     private String sanitizeUrl(String urlString)
     {
         urlString = urlString.replaceAll(" ", "");
-        urlString = urlString.replace("ü", "ue");
+        urlString = urlString.replace("Ã¼", "ue");
         return urlString;
     }
 
